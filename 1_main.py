@@ -16,22 +16,22 @@ st.markdown(""" <style>
 df = load_google_sheet()
 
 
-col1, col2, col3 = st.columns([100, 1000, 100])
+col1, col2, col3 = st.columns([300, 800, 300])
 with col1:
-    st.image(im)
-with col2:
     st.text('')
-    st.markdown("<h1 style='font-size:250%; text-align: center; color: #05A854; padding: 0px 0px;'" +
+with col2:
+    st.markdown("<h1 style='font-size:250%; text-align: center; color: #05A854; padding: 0px 0px'" +
                 ">UFSC em Dados</h1>", unsafe_allow_html=True)
-    st.markdown("<h3 style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px;'" +
-                ">Atualização: 30/03/2023</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 10px 0px;;'" +
+                ">Última atualização: 01/04/2023</h3>", unsafe_allow_html=True)
 with col3:
-    st.image(im)
+    basedados = st.selectbox("Base de dados da UFSC:",
+                         options=["População da UFSC", "Vagas por Curso", 'Inscritos por Curso'], index=0)
 
 
 st.markdown('---')
-
-#df = df.astype(int)
+st.markdown("<h2 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 20px 0px;'" +
+                ">Analise Temporal 1980 a 2021: "+basedados+" - Tabela Dinâmica</h2>", unsafe_allow_html=True)
 
 selected_rows = agg_tabela(df, True)
 
