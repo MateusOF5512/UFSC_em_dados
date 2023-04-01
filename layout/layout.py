@@ -34,6 +34,8 @@ def parte1(df, selected_rows):
 
     st.plotly_chart(fig1, use_container_width=True, config=config)
 
+
+
     with st.expander("Análise Descritiva: ChatGPT3 🤖"):
 
         st.subheader("Resumo dos Gráfico:")
@@ -49,11 +51,19 @@ def parte1(df, selected_rows):
                 f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, e a informações é o número de: {vary_line}.\n"
                 f"Elabore o resumo com base nos Dados disponibilizados observando cada ANO e suas métricas:\n")
 
-        temperature = st.slider('Regule a criatividade do Modelo:',
-                                min_value=0.1, max_value=1.0, value=0.8, step=0.1, key=10)
+        col1, col2 = st.columns([2, 2])
+        with col1:
+            api_key = st.text_input('Adiicione sua API-Key:')
+        with col2:
+            temperature = st.slider('Regule a criatividade do Modelo:',
+                                    min_value=0.1, max_value=1.0, value=0.8, step=0.1, key=10)
 
-        summary2 = generate_summary(prompt2, "text-davinci-003", temperature)
-        st.write(summary2)
+        if len(api_key) == 0:
+            st.write('Adicione uma API-key -> para criar uma acesse: https://platform.openai.com/account/api-keys')
+        elif len(api_key) != 0:
+            summary2 = generate_summary(prompt2, "text-davinci-003", temperature, api_key)
+            st.write(summary2)
+
         st.markdown('---')
 
     with st.expander("Conferir Dados do Gráfico 🔎️ "):
