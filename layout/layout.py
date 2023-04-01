@@ -34,11 +34,6 @@ def parte1(df, selected_rows):
 
     st.plotly_chart(fig1, use_container_width=True, config=config)
 
-    image = fig1.to_image(format="png")
-
-
-
-
     with st.expander("Análise Descritiva: ChatGPT3 🤖"):
 
         st.subheader("Resumo dos Gráfico:")
