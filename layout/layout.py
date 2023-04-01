@@ -53,7 +53,7 @@ def parte1(df, selected_rows):
 
         col1, col2 = st.columns([2, 2])
         with col1:
-            api_key = st.text_input('Adiicione sua API-Key:', value='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')
+            api_key = st.text_input('Adiicione sua API-Key:')
         with col2:
             temperature = st.slider('Regule a criatividade do Modelo:',
                                     min_value=0.1, max_value=1.0, value=0.8, step=0.1, key=10)
