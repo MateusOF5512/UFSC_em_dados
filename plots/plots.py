@@ -39,8 +39,8 @@ def load_google_sheet():
 
     return df
 
-def generate_summary(prompt, engine, temperature):
-    openai.api_key = "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"
+def generate_summary(prompt, engine, temperature, api_key):
+    openai.api_key = api_key
 
     max_context_length = 2049  # tamanho máximo do contexto do GPT-3
     max_completion_length = 1024  # tamanho máximo para a conclusão
