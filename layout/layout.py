@@ -29,7 +29,7 @@ def parte1(df, selected_rows):
     st.markdown('---')
     st.markdown("<h2 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px;'" +
                 ">Analise Temporal "+min+" a "+max+": "+vary_line+"</h2>", unsafe_allow_html=True)
-    st.markdown("<h4 style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px;'" +
+    st.markdown("<h4 style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 10px 0px;'" +
                 ">Dados: " + str(df.shape[0]) + " anos</h4>", unsafe_allow_html=True)
 
     st.plotly_chart(fig1, use_container_width=True, config=config)
@@ -53,7 +53,7 @@ def parte1(df, selected_rows):
 
         col1, col2 = st.columns([2, 2])
         with col1:
-            api_key = st.text_input('Adiicione sua API-Key:')
+            api_key = st.text_input('Adiicione sua API-Key:', value='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')
         with col2:
             temperature = st.slider('Regule a criatividade do Modelo:',
                                     min_value=0.1, max_value=1.0, value=0.8, step=0.1, key=10)
