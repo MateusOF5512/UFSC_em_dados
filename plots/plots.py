@@ -87,8 +87,7 @@ def agg_tabela(df, use_checkbox):
 
 config={"displayModeBar": True,
         "displaylogo": False,
-        'modeBarButtonsToRemove': ['zoom2d', 'toggleSpikelines',
-                                   'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d',
+        'modeBarButtonsToRemove': ['toggleSpikelines', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d',
                                    'hoverClosestCartesian', 'hoverCompareCartesian']}
 
 def bar_plot(df, var1, var2):
@@ -106,13 +105,13 @@ def bar_plot(df, var1, var2):
         marker_color='#05A854'))
     fig.update_layout(
                       paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-                      height=300, margin=dict(l=20, r=20, b=20, t=10), autosize=False, hovermode="x")
+                      height=300, margin=dict(l=80, r=10, b=20, t=10), autosize=False, dragmode=False, hovermode="x")
     fig.update_yaxes(
         title_text="Eixo Y - "+var2, title_font=dict(family='Sans-serif', size=10),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3')
 
     fig.update_xaxes(
-        title_text="Eixo X - "+var1, title_font=dict(family='Sans-serif', size=14),
+        title_text="Eixo X - "+var1, title_font=dict(family='Sans-serif', size=14), dtick=5,
         tickfont=dict(family='Sans-serif', size=12), nticks=20, showgrid=False)
 
     return fig
@@ -130,10 +129,10 @@ def line_plot(df, varx, vary):
 
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-        height=300, hovermode="x unified", margin=dict(l=10, r=10, b=20, t=20)
+        height=300, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=10, b=20, t=10)
     )
     fig.update_xaxes(
-        title_text="Eixo X: "+varx, title_font=dict(family='Sans-serif', size=18),
+        title_text="Eixo X: "+varx, title_font=dict(family='Sans-serif', size=18), dtick=5,
         tickfont=dict(family='Sans-serif', size=12),  showgrid=False, rangeslider_visible=False,
     )
     fig.update_yaxes(
