@@ -18,7 +18,8 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import openai
 
-def load_google_sheet():
+@st.cache
+def load_google_sheet(tabela):
     # Autenticação do Google
     scope = ['https://spreadsheets.google.com/feeds',
              'https://www.googleapis.com/auth/drive']
@@ -27,7 +28,7 @@ def load_google_sheet():
 
     # Carregar a planilha do Google Sheets
     url = 'https://docs.google.com/spreadsheets/d/1cWZ5Pn5ELyH95KgTCNzMJexmPAgGQ9QdWz1x5pfy9ek/edit?usp=sharing'
-    sheet = client.open_by_url(url).sheet1
+    sheet = client.open_by_url(url).worksheet(tabela)
 
     # Converter os dados da planilha em um DataFrame do Pandas
     data = sheet.get_all_values()
@@ -87,8 +88,7 @@ def agg_tabela(df, use_checkbox):
 
 config={"displayModeBar": True,
         "displaylogo": False,
-        'modeBarButtonsToRemove': ['toggleSpikelines', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d',
-                                   'hoverClosestCartesian', 'hoverCompareCartesian']}
+        'modeBarButtonsToRemove': ['toggleSpikelines', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'hoverClosestCartesian']}
 
 def bar_plot(df, var1, var2):
 
@@ -104,15 +104,21 @@ def bar_plot(df, var1, var2):
                       "</br><b>"+var2+":</b> %{y}",
         marker_color='#05A854'))
     fig.update_layout(
-                      paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-                      height=300, margin=dict(l=80, r=10, b=20, t=10), autosize=False, dragmode=False, hovermode="x")
+        paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
+        height=300, margin=dict(l=80, r=10, b=20, t=10), autosize=False,
+        dragmode=False, hovermode="x", clickmode="event+select")
     fig.update_yaxes(
         title_text="Eixo Y - "+var2, title_font=dict(family='Sans-serif', size=10),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3')
-
     fig.update_xaxes(
         title_text="Eixo X - "+var1, title_font=dict(family='Sans-serif', size=14), dtick=5,
         tickfont=dict(family='Sans-serif', size=12), nticks=20, showgrid=False)
+
+    for figure in fig.data:
+        figure.update(
+            selected=dict(marker=dict(color="#E30613")),
+            unselected=dict(marker=dict(color="#05A854", opacity=1)),
+        )
 
     return fig
 
