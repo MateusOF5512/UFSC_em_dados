@@ -47,7 +47,7 @@ def estudantes(df, selected_rows, basedados):
             prompt2 = (
                 f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
                 f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, o contexto da informações é a {basedados} com número de: {vary_line}.\n"
-                f"Elabore o resumo com base nos Dados disponibilizados observando cada década e suas métricas:\n")
+                f"Elabore o resumo com base apenas nos Dados disponibilizados observando cada década e suas métricas:\n")
         elif len(selected_rows) != 0:
             prompt2 = (
                 f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
