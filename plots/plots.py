@@ -108,11 +108,11 @@ def bar_plot(df, var1, var2):
         height=300, margin=dict(l=80, r=10, b=20, t=10), autosize=False,
         dragmode=False, hovermode="x", clickmode="event+select")
     fig.update_yaxes(
-        title_text="Eixo Y - "+var2, title_font=dict(family='Sans-serif', size=10),
+        title_text="Eixo Y - "+var2, title_font=dict(family='Sans-serif', size=14),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3')
     fig.update_xaxes(
         title_text="Eixo X - "+var1, title_font=dict(family='Sans-serif', size=14), dtick=5,
-        tickfont=dict(family='Sans-serif', size=12), nticks=20, showgrid=False)
+        tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False)
 
     for figure in fig.data:
         figure.update(
