@@ -67,7 +67,7 @@ def estudantes(df, selected_rows, basedados):
                     'Caso ainda não tenha uma chave de API, você pode criá-la acessando o seguinte endereço: https://platform.openai.com/account/api-keys.',
                     icon='🗝️')
         elif len(api_key) != 0:
-            summary2 = generate_summary(prompt2, "text-davinci-003", temperature, api_key)
+            summary2 = generate_summary(prompt2, "davinc", temperature, api_key)
             st.markdown("<h3 style='font-size:120%; text-align: center; color: #05A854;'" +
                         ">Análise descritiva dos dados apresentados no gráfico</h3>", unsafe_allow_html=True)
 
@@ -87,7 +87,7 @@ def estudantes(df, selected_rows, basedados):
                     f"Dados do DataFrame: {df[[varx_line, vary_line]].to_string(index=False)}.\n"
                     f"Usando os Dados resolva a pergunta: {solicitacao}:\n"
                     f"Resposta final apresente uma tabela em markdown com a solução da pergunta:\n")
-                summary3 = generate_summary(prompt3, "text-davinci-003", temperature, api_key)
+                summary3 = generate_summary(prompt3, "davinci", temperature, api_key)
                 st.write(summary3)
 
         st.markdown('---')
