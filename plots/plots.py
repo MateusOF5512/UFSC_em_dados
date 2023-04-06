@@ -35,8 +35,25 @@ def load_google_sheet(tabela):
     headers = data.pop(0)
     df = pd.DataFrame(data, columns=headers)
 
+
+
+    return df
+
+def tratamento1(df):
     df = df.astype(int)
 
+    return df
+
+
+def tratamento2(df):
+    df = df.replace("-", 0)
+    df2 = df[['1980', '1981', '1982', '1983', '1984', '1985', '1986', '1987', '1988', '1989', '1990',
+            '1991', '1992', '1993', '1994', '1995', '1996', '1997', '1998', '1999',
+            '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008',
+            '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017',
+            '2018', '2019', '2020', '2021']].apply(pd.to_numeric, downcast='integer', errors='coerce')
+
+    df[df2.columns] = df2
 
     return df
 
@@ -105,7 +122,7 @@ def bar_plot(df, var1, var2):
         marker_color='#05A854'))
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-        height=300, margin=dict(l=80, r=10, b=20, t=10), autosize=False,
+        height=300, margin=dict(l=70, r=10, b=20, t=20), autosize=False,
         dragmode=False, hovermode="x", clickmode="event+select")
     fig.update_yaxes(
         title_text="Eixo Y - "+var2, title_font=dict(family='Sans-serif', size=14),
@@ -147,3 +164,7 @@ def line_plot(df, varx, vary):
     )
 
     return fig
+
+
+
+
