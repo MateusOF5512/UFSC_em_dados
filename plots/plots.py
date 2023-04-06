@@ -18,7 +18,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import openai
 
-#@st.cache
+@st.cache
 def load_google_sheet(tabela):
     # Autenticação do Google
     scope = ['https://spreadsheets.google.com/feeds',
