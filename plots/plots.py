@@ -106,7 +106,7 @@ config={"displayModeBar": True,
         "displaylogo": False,
         'modeBarButtonsToRemove': ['toggleSpikelines', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'hoverClosestCartesian']}
 
-def bar_plot(df, var1, var2):
+def bar_plot(df, var1, var2, cor1):
 
 
     values = df[var1]
@@ -118,7 +118,7 @@ def bar_plot(df, var1, var2):
         textfont=dict(size=20, color='white', family='Arial'),
         hovertemplate="</br><b>"+var1+":</b> %{x}" +
                       "</br><b>"+var2+":</b> %{y}",
-        marker_color='#05A854'))
+        marker_color=cor1))
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
         height=300, margin=dict(l=70, r=10, b=20, t=20), autosize=False,
@@ -127,8 +127,8 @@ def bar_plot(df, var1, var2):
         title_text="Eixo Y - "+var2, title_font=dict(family='Sans-serif', size=14),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3')
     fig.update_xaxes(
-        title_text="Eixo X - "+var1, title_font=dict(family='Sans-serif', size=14), dtick=5,
-        tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False)
+        dtick=5, tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False
+    )
 
     for figure in fig.data:
         figure.update(
@@ -138,6 +138,133 @@ def bar_plot(df, var1, var2):
 
     return fig
 
+
+def bar_emp_plot(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4, cor5, basedados, agrupamento):
+
+
+    values = df[var0]
+    y1 = df[var1]
+    y2 = df[var2]
+    y3 = df[var3]
+    y4 = df[var4]
+    y5 = df[var5]
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=values, y=y1, text=y1, textposition='inside', insidetextanchor='start', name=var1,
+        textfont=dict(size=20, color='white', family='Arial'),
+        hovertemplate="</br><b>"+var0+":</b> %{x}" +
+                      "</br><b>"+basedados+":</b> %{y}",
+        marker_color=cor1))
+    fig.add_trace(go.Bar(
+        x=values, y=y1, text=y2, textposition='inside', insidetextanchor='start', name=var2,
+        textfont=dict(size=20, color='white', family='Arial'),
+        hovertemplate="</br><b>" + var0 + ":</b> %{x}" +
+                      "</br><b>" + basedados + ":</b> %{y}",
+        marker_color=cor2))
+    fig.add_trace(go.Bar(
+        x=values, y=y3, text=y3, textposition='inside', insidetextanchor='start', name=var3,
+        textfont=dict(size=20, color='white', family='Arial'),
+        hovertemplate="</br><b>" + var0 + ":</b> %{x}" +
+                      "</br><b>" + basedados + ":</b> %{y}",
+        marker_color=cor3))
+    fig.add_trace(go.Bar(
+        x=values, y=y4, text=y4, textposition='inside', insidetextanchor='start', name=var4,
+        textfont=dict(size=20, color='white', family='Arial'),
+        hovertemplate="</br><b>" + var0 + ":</b> %{x}" +
+                      "</br><b>" + basedados + ":</b> %{y}",
+        marker_color=cor4))
+    fig.add_trace(go.Bar(
+        x=values, y=y5, text=y5, textposition='inside', insidetextanchor='start', name=var5,
+        textfont=dict(size=20, color='white', family='Arial'),
+        hovertemplate="</br><b>" + var0 + ":</b> %{x}" +
+                      "</br><b>" + basedados + ":</b> %{y}",
+        marker_color=cor5))
+
+    fig.update_layout(
+        paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
+        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.10, xanchor="center", x=0.35),
+        height=300, margin=dict(l=80, r=10, b=20, t=20), autosize=False, barmode='stack',
+        dragmode=False, clickmode="event+select"
+    )
+    fig.update_yaxes(
+        title_text="Eixo Y - " + basedados + " por " + agrupamento, title_font=dict(family='Sans-serif', size=14),
+        tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
+    )
+    fig.update_xaxes(
+        dtick=5, tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False
+    )
+
+    for figure in fig.data:
+        figure.update(
+            selected=dict(marker=dict(color="#E30613")),
+            unselected=dict(marker=dict(color="#05A854", opacity=1)),
+        )
+
+    return fig
+
+def bar_group_plot(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4, cor5, basedados, agrupamento):
+
+    values = df[var0]
+    y1 = df[var1]
+    y2 = df[var2]
+    y3 = df[var3]
+    y4 = df[var4]
+    y5 = df[var5]
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=values, y=y1, text=y1, textposition='inside', insidetextanchor='start', name=var1,
+        textfont=dict(size=20, color='white', family='Arial'),
+        hovertemplate="</br><b>"+var0+":</b> %{x}" +
+                      "</br><b>"+basedados+":</b> %{y}",
+        marker_color=cor1))
+    fig.add_trace(go.Bar(
+        x=values, y=y1, text=y2, textposition='inside', insidetextanchor='start', name=var2,
+        textfont=dict(size=20, color='white', family='Arial'),
+        hovertemplate="</br><b>" + var0 + ":</b> %{x}" +
+                      "</br><b>" + var2 + ":</b> %{y}",
+        marker_color=cor2))
+    fig.add_trace(go.Bar(
+        x=values, y=y3, text=y3, textposition='inside', insidetextanchor='start', name=var3,
+        textfont=dict(size=20, color='white', family='Arial'),
+        hovertemplate="</br><b>" + var0 + ":</b> %{x}" +
+                      "</br><b>" + var3 + ":</b> %{y}",
+        marker_color=cor3))
+    fig.add_trace(go.Bar(
+        x=values, y=y4, text=y4, textposition='inside', insidetextanchor='start', name=var4,
+        textfont=dict(size=20, color='white', family='Arial'),
+        hovertemplate="</br><b>" + var0 + ":</b> %{x}" +
+                      "</br><b>" + var4 + ":</b> %{y}",
+        marker_color=cor4))
+    fig.add_trace(go.Bar(
+        x=values, y=y5, text=y5, textposition='inside', insidetextanchor='start', name=var5,
+        textfont=dict(size=20, color='white', family='Arial'),
+        hovertemplate="</br><b>" + var0 + ":</b> %{x}" +
+                      "</br><b>" + var5 + ":</b> %{y}",
+        marker_color=cor5))
+
+    fig.update_layout(
+        paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
+        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.10, xanchor="center", x=0.35),
+        height=300, margin=dict(l=80, r=10, b=20, t=20), autosize=False, barmode='group',
+        dragmode=False, clickmode="event+select"
+    )
+    fig.update_yaxes(
+        title_text="Eixo Y - " + basedados + " por " + agrupamento, title_font=dict(family='Sans-serif', size=12),
+        tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
+    )
+    fig.update_xaxes(
+        dtick=5, tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False
+    )
+
+    for figure in fig.data:
+        figure.update(
+            selected=dict(marker=dict(color="#E30613")),
+            unselected=dict(marker=dict(color="#05A854", opacity=1)),
+        )
+
+    return fig
 
 def line_plot(df, varx, vary):
     fig = go.Figure()
