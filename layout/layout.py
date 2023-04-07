@@ -7,106 +7,186 @@ from plots.plots import *
 from pandas_profiling import ProfileReport
 from streamlit_pandas_profiling import st_profile_report
 
-def estudantes(df, selected_rows, basedados):
+def populacao(df, selected_rows, basedados, agrupamento):
     with st.sidebar:
         with st.expander("📊️ Manipular o Gráfico"):
-            df_x = df[['ANO']]
-            varx_line = st.selectbox('Coluna para o Eixo X:', df_x.columns.unique(), index=0, key=1)
 
-            df_y = df.drop('ANO', axis=1)
-            vary_line = st.selectbox('Coluna para o Eixo Y:', df_y.columns.unique(), index=0, key=2)
+            grafico = st.selectbox('Tipo do Gráfico:', ['Linha', 'Barra Simples', 'Barras Empilhadas', 'Barras Agrupadas'],
+                                   index=1, key=3)
 
-            grafico = st.selectbox('Tipo do Gráfico:', ['Barra', 'Linha'], index=0, key=3)
+            if grafico == 'Barra Simples' or grafico == 'Linha':
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor1 = st.color_picker('Cor', '#05A854', key=1)
+                with col2:
+                    df_y = df.drop('ANO', axis=1)
+                    vary_line = st.selectbox('Coluna para o Eixo Y:', df_y.columns.unique(), index=0, key=2)
+                    varx_line = 'ANO'
+
+            elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas':
+
+                df['SEM VALOR'] = np.where(df['ANO'] == 1, 1, 0)
+                df_y = df.drop('ANO', axis=1)
+
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor1 = st.color_picker('Cor Y1', '#05A854', key=31)
+                with col2:
+                    vary_line1 = st.selectbox('Coluna para o Eixo Y1:', df_y.columns.unique(), index=0, key=32)
+
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor2 = st.color_picker('Cor Y2', '#005BAB', key=33)
+                with col2:
+                    vary_line2 = st.selectbox('Coluna para o Eixo Y2:', df_y.columns.unique(), index=1, key=34)
+
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor3 = st.color_picker('Cor Y3', '#FFE400', key=35)
+                with col2:
+                    vary_line3 = st.selectbox('Coluna para o Eixo Y3:', df_y.columns.unique(), index=2, key=36)
+
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor4 = st.color_picker('Cor Y4', '#ED1C24', key=37)
+                with col2:
+                    vary_line4 = st.selectbox('Coluna para o Eixo Y4:', df_y.columns.unique(), index=3, key=38)
+
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor5 = st.color_picker('Cor Y5', '#F37519', key=39)
+                with col2:
+                    vary_line5 = st.selectbox('Coluna para o Eixo Y5:', df_y.columns.unique(), index=4, key=40)
+
             st.markdown('---')
 
         st.markdown('---')
 
     if grafico == 'Linha':
         fig1 = line_plot(df, varx_line, vary_line)
-    elif grafico == 'Barra':
-        fig1 = bar_plot(df, varx_line, vary_line)
+    elif grafico == 'Barra Simples':
+        fig1 = bar_plot(df, varx_line, vary_line, cor1)
+
+    elif grafico == 'Barras Empilhadas':
+        fig1 = bar_emp_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5, cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+
+    elif grafico == 'Barras Agrupadas':
+        fig1 = bar_group_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5, cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
 
 
-    max = str(df[varx_line].max())
-    min = str(df[varx_line].min())
+    max = str(df['ANO'].max())
+    min = str(df['ANO'].min())
 
-    st.markdown("<h2 style='font-size:150%; text-align: center; color: #05A854; padding: 10px 0px 15px 0px;'" +
-                ">Análise Temporal: " + vary_line + " entre " + min + " e " + max + "</h2>", unsafe_allow_html=True)
+    if grafico == 'Barra Simples' or grafico == 'Linha':
+        st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                    ">Análise Temporal: <b>"+ basedados +"</b> por <b>" + agrupamento + "</b>, "+
+                    "entre <b>" + min + "</b> - <b>" + max + "</b></h3>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size:120%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                    "><b>" + agrupamento + " selecionado:</b> <b>" + vary_line + "</p>", unsafe_allow_html=True)
+    elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas':
+        st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                    ">Análise Temporal entre " + min + " - " + max + " - "+grafico+"</h3>", unsafe_allow_html=True)
+        st.markdown("<h2 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                    "><b>" + basedados + "</b> por <b>" + agrupamento + ":</b></h2>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size:90%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                    ">" + vary_line1 + ",  "+vary_line2+",  "+vary_line3+",  "+vary_line4+" e  "+vary_line5+"   </hp>", unsafe_allow_html=True)
+
+
 
     st.plotly_chart(fig1, use_container_width=True, config=config)
 
+    if grafico == 'Barra Simples' or grafico == 'Linha':
 
+        with st.expander("Análise descritiva gerada por Inteligencia Artificial 🤖"):
 
-    with st.expander("Análise descritiva gerada por Inteligencia Artificial 🤖"):
+            st.markdown("<h3 style='font-size:130%; text-align: center; color: #05A854; font:'sans serif';" +
+                        ">Configure o ChatGPT-3 para análisar os dados: <br>"+vary_line+" entre "+min+" e "+max+"</h3>", unsafe_allow_html=True)
 
-        st.markdown("<h3 style='font-size:130%; text-align: center; color: #05A854; font:'sans serif';" +
-                    ">Configure o ChatGPT-3 para análisar os dados: <br>"+vary_line+" entre "+min+" e "+max+"</h3>", unsafe_allow_html=True)
-
-
-        if len(selected_rows) == 0:
-            prompt2 = (
-                f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
-                f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, o contexto da informações é a {basedados} com número de: {vary_line}.\n"
-                f"Elabore o resumo com base apenas nos Dados disponibilizados observando cada década e suas métricas:\n")
-        elif len(selected_rows) != 0:
-            prompt2 = (
-                f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
-                f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, o contexto da informações é a {basedados} com número de: {vary_line}.\n"
-                f"Elabore o resumo com base nos Dados disponibilizados observando cada ANO e suas métricas:\n")
-
-        col1, col2 = st.columns([2, 2])
-        with col1:
-            api_key = st.text_input('Adicione sua API-Key - OpenAI:')
-        with col2:
-            temperature = st.slider('Regule a criatividade do ChatGPT3:',
-                                    min_value=0.1, max_value=1.0, value=0.8, step=0.1, key=10)
-        st.markdown('---')
-
-        if len(api_key) == 0:
-            st.warning('Para visualizar as informações geradas pelo ChatGPT-3, é necessário adicionar sua API-Key na caixa de texto localizada na parte superior da tela. '
-                    'Caso ainda não tenha uma chave de API, você pode criá-la acessando o seguinte endereço: https://platform.openai.com/account/api-keys.',
-                    icon='🗝️')
-        elif len(api_key) != 0:
-            summary2 = generate_summary(prompt2, "davinci", temperature, api_key)
-            st.markdown("<h3 style='font-size:120%; text-align: center; color: #05A854;'" +
-                        ">Análise descritiva dos dados apresentados no gráfico</h3>", unsafe_allow_html=True)
-
-            st.write(summary2)
-            st.markdown('---')
 
             if len(selected_rows) == 0:
-                solicitacao = st.text_input('Faça uma pergunta sobre os dados apresentados no gráfico:',
-                                            'Exemplo: qual a variação percentual a cada década?', key="placeholder")
-
+                prompt2 = (
+                    f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
+                    f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
+                    f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
+                    f"Elabore o resumo com base nos Dados disponibilizados observando cada década e suas métricas:\n")
             elif len(selected_rows) != 0:
-                solicitacao = st.text_input('Faça uma pergunta sobre os dados apresentados no gráfico:',
-                                            'Exemplo: qual a variação percentual a cada ano?', key="placeholder")
+                prompt2 = (
+                    f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
+                    f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
+                    f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
+                    f"Elabore o resumo com base nos Dados disponibilizados observando cada ANO e suas métricas:\n")
 
-            if len(api_key) != 0 and len(solicitacao) != 0:
-                prompt3 = (
-                    f"Dados do DataFrame: {df[[varx_line, vary_line]].to_string(index=False)}.\n"
-                    f"Usando os Dados resolva a pergunta: {solicitacao}:\n"
-                    f"Resposta final apresente uma tabela em markdown com a solução da pergunta:\n")
-                summary3 = generate_summary(prompt3, "davinci", temperature, api_key)
-                st.write(summary3)
+            col1, col2 = st.columns([2, 2])
+            with col1:
+                api_key = st.text_input('Adicione sua API-Key - OpenAI:')
+            with col2:
+                temperature = st.slider('Regule a criatividade do ChatGPT3:',
+                                        min_value=0.1, max_value=1.0, value=0.8, step=0.1, key=10)
+            st.markdown('---')
 
-        st.markdown('---')
+            if len(api_key) == 0:
+                st.warning('Para visualizar as informações geradas pelo ChatGPT-3, é necessário adicionar sua API-Key na caixa de texto localizada na parte superior da tela. '
+                        'Caso ainda não tenha uma chave de API, você pode criá-la acessando o seguinte endereço: https://platform.openai.com/account/api-keys.',
+                        icon='🗝️')
+            elif len(api_key) != 0:
+                summary2 = generate_summary(prompt2, "text-davinci-003", temperature, api_key)
+                st.markdown("<h3 style='font-size:120%; text-align: center; color: #05A854;'" +
+                            ">Análise descritiva dos dados apresentados no gráfico</h3>", unsafe_allow_html=True)
+
+                st.write(summary2)
+                st.markdown('---')
+
+                if len(selected_rows) == 0:
+                    solicitacao = st.text_input('Faça uma pergunta sobre os dados apresentados no gráfico:',
+                                                'Exemplo: qual a variação percentual a cada década?', key="placeholder")
+
+                elif len(selected_rows) != 0:
+                    solicitacao = st.text_input('Faça uma pergunta sobre os dados apresentados no gráfico:',
+                                                'Exemplo: qual a variação percentual a cada ano?', key="placeholder")
+
+                if len(api_key) != 0 and len(solicitacao) != 0:
+                    prompt3 = (
+                        f"Dados do DataFrame: {df[[varx_line, vary_line]].to_string(index=False)}.\n"
+                        f"Usando os Dados resolva a pergunta: {solicitacao}:\n"
+                        f"Resposta final apresente uma tabela em markdown com a solução da pergunta:\n")
+                    summary3 = generate_summary(prompt3, "text-davinci-003", temperature, api_key)
+                    st.write(summary3)
+
+            st.markdown('---')
+
+        with st.expander("Conferir Dados do Gráfico 🔎️ "):
+            df_barra = df[[varx_line, vary_line]]
+
+            checkdf = st.checkbox('Visualizar Dados', key=70)
+            if checkdf:
+                st.markdown("<h3 style='font-size:100%; text-align: center; color: #05A854;'" +
+                            "><i>Analise Temporal " + min + " a " + max + ": " + vary_line + "</i> - TABELA RESUMIDA</h3>",
+                            unsafe_allow_html=True)
+                agg_tabela(df_barra, use_checkbox=False)
+
+            df_barra = df_barra.to_csv(index=False).encode('utf-8')
+            st.download_button(label="Download Dados", data=df_barra,
+                               file_name="Analise_Temporal_" + min + "_" + max + "_" + vary_line + ".csv", mime='csv')
+
+    elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas':
+        with st.expander("Análise descritiva gerada por Inteligencia Artificial 🤖"):
+
+            st.markdown('Em construção...')
+
+            st.markdown('---')
 
 
+        with st.expander("Conferir Dados do Gráfico 🔎️ "):
+            df_barra = df[['ANO', vary_line1,vary_line2,vary_line3,vary_line4,vary_line5 ]]
 
-    with st.expander("Conferir Dados do Gráfico 🔎️ "):
-        df_barra = df[[varx_line, vary_line]]
+            checkdf = st.checkbox('Visualizar Dados', key=71)
+            if checkdf:
 
-        checkdf = st.checkbox('Visualizar Dados', key=70)
-        if checkdf:
+                agg_tabela(df_barra, use_checkbox=False)
 
-            st.markdown("<h3 style='font-size:100%; text-align: center; color: #05A854;'" +
-                        "><i>Analise Temporal "+min+" a "+max+": "+vary_line+"</i> - TABELA RESUMIDA</h3>", unsafe_allow_html=True)
-            agg_tabela(df_barra, use_checkbox=False)
-
-        df_barra = df_barra.to_csv(index=False).encode('utf-8')
-        st.download_button(label="Download Dados", data=df_barra,
-                           file_name="Analise_Temporal_"+min+"_"+max+"_"+vary_line+".csv", mime='csv')
+            df_barra = df_barra.to_csv(index=False).encode('utf-8')
+            st.download_button(label="Download Dados", data=df_barra,
+                               file_name="Analise_Temporal_"+min+"_"+max+"_"+basedados+"_"+agrupamento+".csv", mime='csv')
 
 
     return None
@@ -131,7 +211,7 @@ def relatorio(df):
 
 
 
-    report = st.checkbox("🔎 Carregar Análise Exploratória dos Dados: ", key=40)
+    report = st.checkbox("🔎 Carregar Análise Exploratória dos Dados: ", key=41)
 
     if report:
         profile = ProfileReport(df, title="Relatório dos Dados", explorative=True)
@@ -224,20 +304,57 @@ def boasvindas():
     return None
 
 
-def vagasvestibular(df, selected_rows, basedados):
+def vagasvestibular(df, selected_rows, basedados, agrupamento):
+
 
 
     with st.sidebar:
         with st.expander("📊️ Manipular o Gráfico"):
 
-            df_x = df[['ANO']]
-            varx_line = st.selectbox('Coluna para o Eixo X:', df_x.columns.unique(), index=0, key=6)
+            grafico = st.selectbox('Tipo do Gráfico:', ['Linha', 'Barra Simples', 'Barras Empilhadas', 'Barras Agrupadas'], index=1, key=8)
 
-            df_y = df.drop('ANO', axis=1)
-            vary_line = st.selectbox('Coluna para o Eixo Y:', df_y.columns.unique(), index=0, key=7)
+            if grafico == 'Barra Simples' or grafico == 'Linha':
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor1 = st.color_picker('Cor Y', '#05A854', key=10)
+                with col2:
+                    df_y = df.drop('ANO', axis=1)
+                    vary_line = st.selectbox('Coluna para o Eixo Y:', df_y.columns.unique(), index=0, key=7)
 
-            grafico = st.selectbox('Tipo do Gráfico:', ['Barra', 'Linha'], index=0, key=8)
+            elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas':
 
+                df['SEM VALOR'] = np.where(df['ANO'] == 1, 1, 0)
+                df_y = df.drop('ANO', axis=1)
+
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor1 = st.color_picker('Cor Y1', '#05A854', key=22)
+                with col2:
+                    vary_line1 = st.selectbox('Coluna para o Eixo Y1:', df_y.columns.unique(), index=0, key=21)
+
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor2 = st.color_picker('Cor Y2', '#005BAB', key=24)
+                with col2:
+                    vary_line2 = st.selectbox('Coluna para o Eixo Y2:', df_y.columns.unique(), index=1, key=23)
+
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor3 = st.color_picker('Cor Y3', '#FFE400', key=26)
+                with col2:
+                    vary_line3 = st.selectbox('Coluna para o Eixo Y3:', df_y.columns.unique(), index=2, key=25)
+
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor4 = st.color_picker('Cor Y4', '#ED1C24', key=28)
+                with col2:
+                    vary_line4 = st.selectbox('Coluna para o Eixo Y4:', df_y.columns.unique(), index=3, key=27)
+
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    cor5 = st.color_picker('Cor Y5', '#F37519', key=30)
+                with col2:
+                    vary_line5 = st.selectbox('Coluna para o Eixo Y5:', df_y.columns.unique(), index=4, key=29)
 
 
 
@@ -245,10 +362,34 @@ def vagasvestibular(df, selected_rows, basedados):
 
         st.markdown('---')
 
+    max = str(df['ANO'].max())
+    min = str(df['ANO'].min())
+
     if grafico == 'Linha':
-        fig1 = line_plot(df, varx_line, vary_line)
-    elif grafico == 'Barra':
-        fig1 = bar_plot(df, varx_line, vary_line)
+        fig1 = line_plot(df, 'ANO', vary_line)
+    elif grafico == 'Barra Simples':
+        fig1 = bar_plot(df, 'ANO', vary_line, cor1)
+    elif grafico == 'Barras Empilhadas':
+        fig1 = bar_emp_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5, cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+
+    elif grafico == 'Barras Agrupadas':
+        fig1 = bar_group_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5, cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+
+    if grafico == 'Barra Simples' or grafico == 'Linha':
+        st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                    ">Análise Temporal: <b>"+ basedados +"</b> por <b>" + agrupamento + "</b>, "+
+                    "entre <b>" + min + "</b> - <b>" + max + "</b></h3>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size:120%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                    "><b>" + agrupamento + " selecionado:</b> <b>" + vary_line + "</p>", unsafe_allow_html=True)
+    elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas':
+        st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                    ">Análise Temporal entre " + min + " - " + max + " - "+grafico+"</h3>", unsafe_allow_html=True)
+        st.markdown("<h2 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                    "><b>" + basedados + "</b> por <b>" + agrupamento + ":</b></h2>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size:90%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                    ">" + vary_line1 + ",  "+vary_line2+",  "+vary_line3+",  "+vary_line4+" e  "+vary_line5+"   </hp>", unsafe_allow_html=True)
+
+
 
     st.plotly_chart(fig1, use_container_width=True, config=config)
 
