@@ -33,29 +33,33 @@ with st.sidebar:
 
     st.markdown('---')
     basedados = st.selectbox("Selecione os dados para sua análise:",
-                             options=["População de Estudantes",
-                                      "População de Funcionários",
+                             options=["População Universitária",
                                       "Vagas no Vestibular"], index=0)
 
-    if basedados == "População de Estudantes":
-        df = load_google_sheet(tabela="1")
-        df = tratamento1(df)
-    elif basedados == "População de Funcionários":
-        df = load_google_sheet(tabela="2")
-        df = tratamento1(df)
+    if basedados == "População Universitária":
+        agrupamento1 = st.radio('Selecione o agrupamento:', ['Estudantes', 'Funcionários'], index=0, key=9,
+                               horizontal=True)
+        if agrupamento1 == 'Estudantes':
+            df = load_google_sheet(tabela="1")
+            df = tratamento1(df)
+
+        if agrupamento1 == 'Funcionários':
+            df = load_google_sheet(tabela="2")
+            df = tratamento1(df)
+
     elif basedados == "Vagas no Vestibular":
         df = load_google_sheet(tabela="3")
         df = tratamento2(df)
 
-        agrupamento = st.radio('Selecione o agrupamento:', ['Cursos', 'Centros', 'Campus'], index=0, key=9, horizontal=True)
+        agrupamento2 = st.radio('Selecione o agrupamento:', ['Cursos', 'Centro de Ensino', 'Campus'], index=0, key=9, horizontal=True)
 
-        if agrupamento == 'Cursos':
+        if agrupamento2 == 'Cursos':
             df = df.groupby("CURSO").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
 
-        elif agrupamento == 'Centros':
+        elif agrupamento2 == 'Centro de Ensino':
             df = df.groupby("CENTRO DE ENSINO").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
 
-        elif agrupamento == 'Campus':
+        elif agrupamento2 == 'Campus':
             df = df.groupby("CAMPUS").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
 
         df = df.astype(int)
@@ -78,7 +82,7 @@ with st.sidebar:
 
 st.markdown('---')
 
-if basedados == "População de Estudantes" or basedados == "População de Funcionários":
+if basedados == "População Universitária":
     st.markdown("<h2 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 15px 0px;'" +
                 ">"+basedados+" entre "+str(ano_range_min)+" a "+str(ano_range_max)+" - Tabela Dinâmica</h2>", unsafe_allow_html=True)
 
@@ -89,20 +93,16 @@ tab1, tab2, tab3, tab4 = st.tabs(["LABORATÓRIO 🔬", "ANÁLISE EXPLORATÓRIA �
 
 with tab1:
     if len(selected_rows) == 0:
-        if basedados == "População de Estudantes":
-            estudantes(df, selected_rows, basedados)
-        elif basedados == "População de Funcionários":
-            estudantes(df, selected_rows, basedados)
+        if basedados == "População Universitária":
+            populacao(df, selected_rows, basedados, agrupamento1)
         elif basedados == "Vagas no Vestibular":
-            vagasvestibular(df, selected_rows, basedados)
+            vagasvestibular(df, selected_rows, basedados, agrupamento2)
         st.text('')
     elif len(selected_rows) != 0:
-        if basedados == "População de Estudantes":
-            estudantes(selected_rows, selected_rows, basedados)
-        elif basedados == "População de Funcionários":
-            estudantes(selected_rows, selected_rows, basedados)
+        if basedados == "População Universitária":
+            populacao(selected_rows, selected_rows, basedados, agrupamento1)
         elif basedados == "Vagas no Vestibular":
-            estudantes(selected_rows, selected_rows, basedados)
+            vagasvestibular(df, selected_rows, basedados, agrupamento2)
 with tab2:
     if len(selected_rows) == 0:
         relatorio(df)
