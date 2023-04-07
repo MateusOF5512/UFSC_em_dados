@@ -137,11 +137,11 @@ def populacao(df, selected_rows, basedados, agrupamento):
                 st.markdown('---')
 
                 if len(selected_rows) == 0:
-                    solicitacao = st.text_input('Faça uma pergunta sobre os dados apresentados no gráfico:',
+                    solicitacao = st.text_area('Faça uma pergunta sobre os dados apresentados no gráfico:',
                                                 'Exemplo: qual a variação percentual a cada década?', key="placeholder")
 
                 elif len(selected_rows) != 0:
-                    solicitacao = st.text_input('Faça uma pergunta sobre os dados apresentados no gráfico:',
+                    solicitacao = st.text_area('Faça uma pergunta sobre os dados apresentados no gráfico:',
                                                 'Exemplo: qual a variação percentual a cada ano?', key="placeholder")
 
                 if len(api_key) != 0 and len(solicitacao) != 0:
@@ -208,6 +208,7 @@ def relatorio(df):
                     Para gerar esses Relatórios pode demorar uns segundos, dependendo da Tabela até minutos."""
 
     st.info(text)
+
 
 
 
