@@ -97,7 +97,6 @@ with tab1:
             populacao(df, selected_rows, basedados, agrupamento1)
         elif basedados == "Vagas no Vestibular":
             vagasvestibular(df, selected_rows, basedados, agrupamento2)
-        st.text('')
     elif len(selected_rows) != 0:
         if basedados == "População Universitária":
             populacao(selected_rows, selected_rows, basedados, agrupamento1)
