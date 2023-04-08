@@ -17,10 +17,10 @@ st.markdown(""" <style>
 
 st.markdown("<h1 style='font-size:250%; text-align: center; color: #05A854; padding: 0px 0px;'" +
                 ">UFSC em Dados</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 10px 0px;'" +
-            ">Última atualização: 01/04/2023</h3>", unsafe_allow_html=True)
+st.markdown('---')
 
 st.markdown("""<style> .css-hxt7ib.e1fqkh3o5 {margin-top: -90px;}</style>""", unsafe_allow_html=True)
+st.markdown("""<style> .css-18e3th9.egzxvld2 {margin-top: -50px;}</style>""", unsafe_allow_html=True)
 
 with st.sidebar:
     col1, col2, col3 = st.columns([2, 4, 2])
@@ -80,11 +80,15 @@ with st.sidebar:
         df = df.loc[mask_valor]
 
 
-st.markdown('---')
 
 if basedados == "População Universitária":
-    st.markdown("<h2 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 15px 0px;'" +
-                ">"+basedados+" entre "+str(ano_range_min)+" a "+str(ano_range_max)+" - Tabela Dinâmica</h2>", unsafe_allow_html=True)
+    st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -40px;'" +
+                ">" + basedados + ": <b> n° de "  + agrupamento1+" entre "+str(ano_range_min)+" - "+
+                str(ano_range_max)+" | Tabela Dinâmica</b></h3>", unsafe_allow_html=True)
+elif basedados == "Vagas no Vestibular":
+    st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -50'" +
+                ">" + basedados + ": <b> n° de " + agrupamento2 + " entre " + str(ano_range_min) + " - " +
+                str(ano_range_max) + " | Tabela Dinâmica</b></h3>", unsafe_allow_html=True)
 
 selected_rows = agg_tabela(df, True)
 
