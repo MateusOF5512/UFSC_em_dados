@@ -9,91 +9,120 @@ from streamlit_pandas_profiling import st_profile_report
 
 def populacao(df, selected_rows, basedados, agrupamento):
     with st.sidebar:
-        with st.expander("📊️ Manipular o Gráfico"):
+        grafico = st.selectbox('Tipo do Gráfico:', ['Barra Simples', 'Barras Empilhadas', 'Barras Agrupadas',
+                                                    'Linha Simples', 'Multiplas Linhas','Multiplas Áreas', 'Área Normalizada'],
+                               index=0, key=3)
 
-            grafico = st.selectbox('Tipo do Gráfico:', ['Linha', 'Barra Simples', 'Barras Empilhadas', 'Barras Agrupadas'],
-                                   index=1, key=3)
-
-            if grafico == 'Barra Simples' or grafico == 'Linha':
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor1 = st.color_picker('Cor', '#05A854', key=1)
-                with col2:
-                    df_y = df.drop('ANO', axis=1)
-                    vary_line = st.selectbox('Coluna para o Eixo Y:', df_y.columns.unique(), index=0, key=2)
-                    varx_line = 'ANO'
-
-            elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas':
-
-                df['SEM VALOR'] = np.where(df['ANO'] == 1, 1, 0)
+        if grafico == 'Barra Simples' or grafico == 'Linha Simples':
+            col1, col2 = st.columns([1, 6])
+            with col1:
+                cor1 = st.color_picker('Cor', '#05A854', key=1)
+            with col2:
                 df_y = df.drop('ANO', axis=1)
+                vary_line = st.selectbox(agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=2)
+                varx_line = 'ANO'
+            st.text('')
+            st.text('')
+            st.text('')
+            st.text('')
+            st.text('')
 
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor1 = st.color_picker('Cor Y1', '#05A854', key=31)
-                with col2:
-                    vary_line1 = st.selectbox('Coluna para o Eixo Y1:', df_y.columns.unique(), index=0, key=32)
+        elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
+                grafico == 'Multiplas Linhas' or grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
 
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor2 = st.color_picker('Cor Y2', '#005BAB', key=33)
-                with col2:
-                    vary_line2 = st.selectbox('Coluna para o Eixo Y2:', df_y.columns.unique(), index=1, key=34)
+            df['NULO'] = np.where(df['ANO'] == 0, 0, 0)
+            cols = df.columns.tolist()
+            cols = cols[-1:] + cols[:-1]
+            df = df[cols]
 
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor3 = st.color_picker('Cor Y3', '#FFE400', key=35)
-                with col2:
-                    vary_line3 = st.selectbox('Coluna para o Eixo Y3:', df_y.columns.unique(), index=2, key=36)
+            df_y = df.drop('ANO', axis=1)
 
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor4 = st.color_picker('Cor Y4', '#ED1C24', key=37)
-                with col2:
-                    vary_line4 = st.selectbox('Coluna para o Eixo Y4:', df_y.columns.unique(), index=3, key=38)
+            col1, col2 = st.columns([1, 8])
+            with col1:
+                cor1 = st.color_picker('Cor 1', '#05A854', key=31)
+            with col2:
+                vary_line1 = st.selectbox(agrupamento+' selecionado 1:', df_y.columns.unique(), index=1, key=32)
 
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor5 = st.color_picker('Cor Y5', '#F37519', key=39)
-                with col2:
-                    vary_line5 = st.selectbox('Coluna para o Eixo Y5:', df_y.columns.unique(), index=4, key=40)
+            col1, col2 = st.columns([1, 8])
+            with col1:
+                cor2 = st.color_picker('Cor 2', '#005BAB', key=33)
+            with col2:
+                vary_line2 = st.selectbox(agrupamento+' selecionado 2:', df_y.columns.unique(), index=2, key=34)
 
-            st.markdown('---')
+            col1, col2 = st.columns([1, 8])
+            with col1:
+                cor3 = st.color_picker('Cor 3', '#FFE400', key=35)
+            with col2:
+                vary_line3 = st.selectbox(agrupamento+' selecionado 3:', df_y.columns.unique(), index=3, key=36)
+
+            col1, col2 = st.columns([1, 8])
+            with col1:
+                cor4 = st.color_picker('Cor 4', '#ED1C24', key=37)
+            with col2:
+                vary_line4 = st.selectbox(agrupamento+' selecionado 4:', df_y.columns.unique(), index=0, key=38)
+
+            col1, col2 = st.columns([1, 8])
+            with col1:
+                cor5 = st.color_picker('Cor 5', '#F37519', key=39)
+            with col2:
+                vary_line5 = st.selectbox(agrupamento+' selecionado 5:', df_y.columns.unique(), index=0, key=40)
 
         st.markdown('---')
 
-    if grafico == 'Linha':
+
+
+    if grafico == 'Linha Simples':
         fig1 = line_plot(df, varx_line, vary_line)
     elif grafico == 'Barra Simples':
+
         fig1 = bar_plot(df, varx_line, vary_line, cor1)
 
     elif grafico == 'Barras Empilhadas':
-        fig1 = bar_emp_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5, cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+        fig1 = bar_emp_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                            cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
 
     elif grafico == 'Barras Agrupadas':
-        fig1 = bar_group_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5, cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
-
+        fig1 = bar_group_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                              cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+    elif grafico == 'Multiplas Linhas':
+        fig1 = line_mult_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                              cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+    elif grafico == 'Multiplas Áreas':
+        fig1 = area(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                              cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+    elif grafico == 'Área Normalizada':
+        fig1 = area_norm(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                              cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
 
     max = str(df['ANO'].max())
     min = str(df['ANO'].min())
 
-    if grafico == 'Barra Simples' or grafico == 'Linha':
-        st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
-                    ">Análise Temporal: <b>"+ basedados +"</b> por <b>" + agrupamento + "</b>, "+
-                    "entre <b>" + min + "</b> - <b>" + max + "</b></h3>", unsafe_allow_html=True)
-        st.markdown("<p style='font-size:120%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
-                    "><b>" + agrupamento + " selecionado:</b> <b>" + vary_line + "</p>", unsafe_allow_html=True)
-    elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas':
-        st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
-                    ">Análise Temporal entre " + min + " - " + max + " - "+grafico+"</h3>", unsafe_allow_html=True)
-        st.markdown("<h2 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
-                    "><b>" + basedados + "</b> por <b>" + agrupamento + ":</b></h2>", unsafe_allow_html=True)
+    if grafico == 'Barra Simples' or grafico == 'Linha Simples':
+        st.markdown("<h3 style='font-size:125%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                    "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                    " - " + max + " | " + grafico + "</h3>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                    "><b>" + agrupamento + " selecionado:</b> " + vary_line + "</p>", unsafe_allow_html=True)
+
+    elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or grafico == 'Multiplas Áreas':
+        st.markdown("<h3 style='font-size:125%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                    "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                    " - " + max + " | "+grafico+"</h3>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                    "><b>" + agrupamento + " selecionado:</b> " + vary_line1 + ",  "+vary_line2+",  "+vary_line3+",  "+vary_line4+" e  "+vary_line5+"</p>", unsafe_allow_html=True)
+
+    elif grafico == 'Área Normalizada':
+        st.markdown("<h3 style='font-size:120%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                    "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                    " - " + max + " | "+grafico+"</h3>", unsafe_allow_html=True)
         st.markdown("<p style='font-size:90%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
-                    ">" + vary_line1 + ",  "+vary_line2+",  "+vary_line3+",  "+vary_line4+" e  "+vary_line5+"   </hp>", unsafe_allow_html=True)
+                    "><b>" + agrupamento + " selecionado:</b> " + vary_line1 + ",  "+vary_line2+",  "+vary_line3+",  "+vary_line4+" e  "+vary_line5+"</p>", unsafe_allow_html=True)
+
 
 
 
     st.plotly_chart(fig1, use_container_width=True, config=config)
+
 
     if grafico == 'Barra Simples' or grafico == 'Linha':
 
@@ -230,7 +259,7 @@ def rodape():
       margin-right: auto;
       border-style: inset;
       border-width: 1.5px;">
-      <p style="color:Gainsboro; text-align: center;">Desenvolvedor: mateus7ortiz@gmail.com</p>
+      <p style="color:#05A854; text-align: center;">Última atualização: 08/04/23 | mateus7ortiz@gmail.com</p>
     """
     st.markdown(html_rodpe, unsafe_allow_html=True)
 
@@ -310,87 +339,110 @@ def vagasvestibular(df, selected_rows, basedados, agrupamento):
 
 
     with st.sidebar:
-        with st.expander("📊️ Manipular o Gráfico"):
+        grafico = st.selectbox('Tipo do Gráfico:', ['Barra Simples', 'Barras Empilhadas', 'Barras Agrupadas',
+                                                    'Linha Simples', 'Multiplas Linhas', 'Multiplas Áreas',
+                                                    'Área Normalizada'],
+                               index=0, key=8)
 
-            grafico = st.selectbox('Tipo do Gráfico:', ['Linha', 'Barra Simples', 'Barras Empilhadas', 'Barras Agrupadas'], index=1, key=8)
-
-            if grafico == 'Barra Simples' or grafico == 'Linha':
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor1 = st.color_picker('Cor Y', '#05A854', key=10)
-                with col2:
-                    df_y = df.drop('ANO', axis=1)
-                    vary_line = st.selectbox('Coluna para o Eixo Y:', df_y.columns.unique(), index=0, key=7)
-
-            elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas':
-
-                df['SEM VALOR'] = np.where(df['ANO'] == 1, 1, 0)
+        if grafico == 'Barra Simples' or grafico == 'Linha Simples':
+            col1, col2 = st.columns([1, 6])
+            with col1:
+                cor1 = st.color_picker('Cor Y', '#05A854', key=10)
+            with col2:
                 df_y = df.drop('ANO', axis=1)
+                vary_line = st.selectbox('Selecione  para o Eixo Y:', df_y.columns.unique(), index=0, key=7)
+            st.text('')
+            st.text('')
+            st.text('')
+            st.text('')
+            st.text('')
 
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor1 = st.color_picker('Cor Y1', '#05A854', key=22)
-                with col2:
-                    vary_line1 = st.selectbox('Coluna para o Eixo Y1:', df_y.columns.unique(), index=0, key=21)
+        elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
+                grafico == 'Multiplas Linhas' or grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
 
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor2 = st.color_picker('Cor Y2', '#005BAB', key=24)
-                with col2:
-                    vary_line2 = st.selectbox('Coluna para o Eixo Y2:', df_y.columns.unique(), index=1, key=23)
+            df['SEM VALOR'] = np.where(df['ANO'] == 1, 1, 0)
+            df_y = df.drop('ANO', axis=1)
 
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor3 = st.color_picker('Cor Y3', '#FFE400', key=26)
-                with col2:
-                    vary_line3 = st.selectbox('Coluna para o Eixo Y3:', df_y.columns.unique(), index=2, key=25)
+            col1, col2 = st.columns([1, 6])
+            with col1:
+                cor1 = st.color_picker('Cor Y1', '#05A854', key=22)
+            with col2:
+                vary_line1 = st.selectbox('Coluna para o Eixo Y1:', df_y.columns.unique(), index=0, key=21)
 
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor4 = st.color_picker('Cor Y4', '#ED1C24', key=28)
-                with col2:
-                    vary_line4 = st.selectbox('Coluna para o Eixo Y4:', df_y.columns.unique(), index=3, key=27)
+            col1, col2 = st.columns([1, 6])
+            with col1:
+                cor2 = st.color_picker('Cor Y2', '#005BAB', key=24)
+            with col2:
+                vary_line2 = st.selectbox('Coluna para o Eixo Y2:', df_y.columns.unique(), index=1, key=23)
 
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    cor5 = st.color_picker('Cor Y5', '#F37519', key=30)
-                with col2:
-                    vary_line5 = st.selectbox('Coluna para o Eixo Y5:', df_y.columns.unique(), index=4, key=29)
+            col1, col2 = st.columns([1, 6])
+            with col1:
+                cor3 = st.color_picker('Cor Y3', '#FFE400', key=26)
+            with col2:
+                vary_line3 = st.selectbox('Coluna para o Eixo Y3:', df_y.columns.unique(), index=2, key=25)
 
+            col1, col2 = st.columns([1, 6])
+            with col1:
+                cor4 = st.color_picker('Cor Y4', '#ED1C24', key=28)
+            with col2:
+                vary_line4 = st.selectbox('Coluna para o Eixo Y4:', df_y.columns.unique(), index=3, key=27)
 
-
-            st.markdown('---')
+            col1, col2 = st.columns([1, 6])
+            with col1:
+                cor5 = st.color_picker('Cor Y5', '#F37519', key=30)
+            with col2:
+                vary_line5 = st.selectbox('Coluna para o Eixo Y5:', df_y.columns.unique(), index=4, key=29)
 
         st.markdown('---')
 
     max = str(df['ANO'].max())
     min = str(df['ANO'].min())
 
-    if grafico == 'Linha':
+    if grafico == 'Linha Simples':
         fig1 = line_plot(df, 'ANO', vary_line)
     elif grafico == 'Barra Simples':
         fig1 = bar_plot(df, 'ANO', vary_line, cor1)
     elif grafico == 'Barras Empilhadas':
-        fig1 = bar_emp_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5, cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
-
+        fig1 = bar_emp_plot(
+            df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+            cor1, cor2, cor3, cor4, cor5, basedados, agrupamento
+        )
     elif grafico == 'Barras Agrupadas':
-        fig1 = bar_group_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5, cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+        fig1 = bar_group_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                              cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
 
-    if grafico == 'Barra Simples' or grafico == 'Linha':
-        st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
-                    ">Análise Temporal: <b>"+ basedados +"</b> por <b>" + agrupamento + "</b>, "+
-                    "entre <b>" + min + "</b> - <b>" + max + "</b></h3>", unsafe_allow_html=True)
-        st.markdown("<p style='font-size:120%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
-                    "><b>" + agrupamento + " selecionado:</b> <b>" + vary_line + "</p>", unsafe_allow_html=True)
-    elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas':
-        st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
-                    ">Análise Temporal entre " + min + " - " + max + " - "+grafico+"</h3>", unsafe_allow_html=True)
-        st.markdown("<h2 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
-                    "><b>" + basedados + "</b> por <b>" + agrupamento + ":</b></h2>", unsafe_allow_html=True)
+    elif grafico == 'Multiplas Linhas':
+        fig1 = line_mult_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                              cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+    elif grafico == 'Multiplas Áreas':
+        fig1 = area(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                              cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+    elif grafico == 'Área Normalizada':
+        fig1 = area_norm(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                              cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+
+    if grafico == 'Barra Simples' or grafico == 'Linha Simples':
+        st.markdown("<h3 style='font-size:125%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                    "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                    " - " + max + " | " + grafico + "</h3>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                    "><b>" + agrupamento + " selecionado:</b> " + vary_line + "</p>", unsafe_allow_html=True)
+
+    elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or grafico == 'Multiplas Áreas':
+        st.markdown("<h3 style='font-size:125%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                    "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                    " - " + max + " | " + grafico + "</h3>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                    "><b>" + agrupamento + " selecionado:</b> " + vary_line1 + ",  " + vary_line2 + ",  " + vary_line3 + ",  " + vary_line4 + " e  " + vary_line5 + "</p>",
+                    unsafe_allow_html=True)
+
+    elif grafico == 'Área Normalizada':
+        st.markdown("<h3 style='font-size:120%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                    "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                    " - " + max + " | " + grafico + "</h3>", unsafe_allow_html=True)
         st.markdown("<p style='font-size:90%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
-                    ">" + vary_line1 + ",  "+vary_line2+",  "+vary_line3+",  "+vary_line4+" e  "+vary_line5+"   </hp>", unsafe_allow_html=True)
-
-
+                    "><b>" + agrupamento + " selecionado:</b> " + vary_line1 + ",  " + vary_line2 + ",  " + vary_line3 + ",  " + vary_line4 + " e  " + vary_line5 + "</p>",
+                    unsafe_allow_html=True)
 
     st.plotly_chart(fig1, use_container_width=True, config=config)
 
