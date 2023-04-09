@@ -13,9 +13,9 @@ import io
 def sidebar_variaveis(df, grafico, basedados, agrupamento):
     with st.sidebar:
         if grafico == 'Barra Simples' or grafico == 'Linha Simples':
-            col1, col2 = st.columns([1, 6])
+            col1, col2 = st.columns([1, 8])
             with col1:
-                cor1 = st.color_picker('Cor', '#05A854', key=1)
+                cor1 = st.color_picker('', '#05A854', key=1)
             with col2:
                 df_y = df.drop('ANO', axis=1)
                 vary_line = st.selectbox(agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=2)
@@ -36,31 +36,31 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
 
             df_y = df.drop('ANO', axis=1)
 
-            col1, col2 = st.columns([1, 7])
+            col1, col2 = st.columns([1, 8])
             with col1:
                 cor1 = st.color_picker('', '#05A854', key=31)
             with col2:
                 vary_line1 = st.selectbox('1° '+agrupamento+' selecionado:', df_y.columns.unique(), index=1, key=32)
 
-            col1, col2 = st.columns([1, 7])
+            col1, col2 = st.columns([1, 8])
             with col1:
                 cor2 = st.color_picker('', '#005BAB', key=33)
             with col2:
                 vary_line2 = st.selectbox('2° '+agrupamento+' selecionado:', df_y.columns.unique(), index=2, key=34)
 
-            col1, col2 = st.columns([1, 7])
+            col1, col2 = st.columns([1, 8])
             with col1:
                 cor3 = st.color_picker('', '#FFE400', key=35)
             with col2:
                 vary_line3 = st.selectbox('3° '+agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=36)
 
-            col1, col2 = st.columns([1, 7])
+            col1, col2 = st.columns([1, 8])
             with col1:
                 cor4 = st.color_picker('', '#ED1C24', key=37)
             with col2:
                 vary_line4 = st.selectbox('4° '+agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=38)
 
-            col1, col2 = st.columns([1, 7])
+            col1, col2 = st.columns([1, 8])
             with col1:
                 cor5 = st.color_picker('', '#F37519', key=39)
             with col2:
