@@ -32,12 +32,13 @@ with st.sidebar:
         st.write('')
 
     st.markdown('---')
-    basedados = st.selectbox("Selecione os dados para sua análise:",
+    basedados = st.selectbox("Selecione a tabela para análise:",
                              options=["População Universitária",
                                       "Vagas no Vestibular"], index=0)
 
     if basedados == "População Universitária":
-        agrupamento = st.radio('Selecione o agrupamento:', ['Estudantes', 'Funcionários'], index=0, key=9,
+        agrupamento = st.radio('Selecione o agrupamento dos dados da tabela:',
+                               ['Estudantes', 'Funcionários'], index=0, key=9,
                                horizontal=True)
         if agrupamento == 'Estudantes':
             df = load_google_sheet(tabela="1")
@@ -51,9 +52,10 @@ with st.sidebar:
         df = load_google_sheet(tabela="3")
         df = tratamento2(df)
 
-        agrupamento = st.radio('Selecione o agrupamento:', ['Cursos', 'Centro de Ensino', 'Campus'], index=0, key=9, horizontal=True)
+        agrupamento = st.radio('Selecione o agrupamento dos dados da Tabela:',
+                               ['Curso', 'Centro de Ensino', 'Campus'], index=0, key=9, horizontal=True)
 
-        if agrupamento == 'Cursos':
+        if agrupamento == 'Curso':
             df = df.groupby("CURSO").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
 
         elif agrupamento == 'Centro de Ensino':
@@ -93,7 +95,7 @@ if basedados == "População Universitária":
                 str(ano_range_max)+" | Tabela Dinâmica</b></h3>", unsafe_allow_html=True)
 elif basedados == "Vagas no Vestibular":
     st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -50'" +
-                ">" + basedados + ": <b> n° de " + agrupamento + " entre " + str(ano_range_min) + " - " +
+                ">" + basedados + ": <b> n° por " + agrupamento + " entre " + str(ano_range_min) + " - " +
                 str(ano_range_max) + " | Tabela Dinâmica</b></h3>", unsafe_allow_html=True)
 
 selected_rows = agg_tabela(df, True)
