@@ -106,7 +106,7 @@ config={"displayModeBar": True,
         "displaylogo": False,
         'modeBarButtonsToRemove': ['toggleSpikelines', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'hoverClosestCartesian']}
 
-def bar_plot(df, var1, var2, cor1):
+def bar_plot(df, var1, var2, cor1, agrupamento):
 
 
     values = df[var1]
@@ -121,10 +121,10 @@ def bar_plot(df, var1, var2, cor1):
         marker_color=cor1))
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-        height=300, margin=dict(l=70, r=10, b=20, t=20), autosize=False,
+        height=300, margin=dict(l=80, r=20, b=0, t=30), autosize=False,
         dragmode=False, hovermode="x", clickmode="event+select")
     fig.update_yaxes(
-        title_text="Eixo Y - "+var2, title_font=dict(family='Sans-serif', size=14),
+        title_text=agrupamento+": "+var2, title_font=dict(family='Sans-serif', size=10),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3')
     fig.update_xaxes(
         dtick=5, tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False
@@ -183,12 +183,12 @@ def bar_emp_plot(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4,
 
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.10, xanchor="center", x=0.35),
-        height=300, margin=dict(l=80, r=10, b=20, t=20), autosize=False, barmode='stack',
-        dragmode=False, clickmode="event+select"
+        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.15, xanchor="center", x=0.40),
+        height=315, hovermode=None, autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=50),
+        clickmode="event+select", barmode='stack'
     )
     fig.update_yaxes(
-        title_text="Eixo Y - " + basedados + " por " + agrupamento, title_font=dict(family='Sans-serif', size=12),
+        title_text="Número de " + agrupamento, title_font=dict(family='Sans-serif', size=14),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
     )
     fig.update_xaxes(
@@ -246,12 +246,12 @@ def bar_group_plot(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor
 
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.10, xanchor="center", x=0.35),
-        height=300, margin=dict(l=80, r=10, b=20, t=20), autosize=False, barmode='group',
-        dragmode=False, clickmode="event+select"
+        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.15, xanchor="center", x=0.40),
+        height=315, hovermode=None, autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=50),
+        clickmode="event+select", barmode='group'
     )
     fig.update_yaxes(
-        title_text="Eixo Y - " + basedados + " por " + agrupamento, title_font=dict(family='Sans-serif', size=12),
+        title_text="Número de " + agrupamento, title_font=dict(family='Sans-serif', size=14),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
     )
     fig.update_xaxes(
@@ -294,21 +294,27 @@ def line_mult_plot(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor
 
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.05, xanchor="center", x=0.40),
-        height=300, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=10, b=20, t=30)
+        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.15, xanchor="center", x=0.40),
+        height=315, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=50)
     )
     fig.update_yaxes(
-        title_text="Eixo Y - " + basedados + " por " + agrupamento, title_font=dict(family='Sans-serif', size=12),
+        title_text="Número de " + agrupamento, title_font=dict(family='Sans-serif', size=14),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
     )
     fig.update_xaxes(
         dtick=5, tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False
     )
 
+    for figure in fig.data:
+        figure.update(
+            selected=dict(marker=dict(color="#E30613")),
+            unselected=dict(marker=dict(color="#05A854", opacity=1)),
+        )
+
     return fig
 
 
-def line_plot(df, varx, vary):
+def line_plot(df, varx, vary, cor1, agrupamento):
     fig = go.Figure()
 
     values = df[varx]
@@ -316,21 +322,25 @@ def line_plot(df, varx, vary):
 
     fig.add_trace(go.Scatter(
         x=values, y=y,
-        mode='lines+markers', hovertemplate=None, line=dict(width=3, color='#05A854')))
+        mode='lines+markers', hovertemplate=None, line=dict(width=3, color=cor1)))
 
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
         legend=dict(font_size=10, orientation="h", yanchor="top", y=1.10, xanchor="center", x=0.35),
-        height=300, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=10, b=20, t=10)
-    )
-    fig.update_xaxes(
-        title_text="Eixo X: "+varx, title_font=dict(family='Sans-serif', size=18), dtick=5,
-        tickfont=dict(family='Sans-serif', size=12),  showgrid=False, rangeslider_visible=False,
+        height=300, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=30)
     )
     fig.update_yaxes(
-        title_text="Eixo Y: "+vary, title_font=dict(family='Sans-serif', size=18),
-        tickfont=dict(family='Sans-serif', size=12), nticks=7, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
+        title_text=agrupamento + ": " + vary, title_font=dict(family='Sans-serif', size=10),
+        tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3')
+    fig.update_xaxes(
+        dtick=5, tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False
     )
+
+    for figure in fig.data:
+        figure.update(
+            selected=dict(marker=dict(color="#E30613")),
+            unselected=dict(marker=dict(color="#05A854", opacity=1)),
+        )
 
     return fig
 
@@ -344,49 +354,54 @@ def area(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4, cor5, b
     y4 = df[var4]
     y5 = df[var5]
 
+
+
     fig.add_trace(go.Scatter(
         x=values, y=y1, name=var1,
-        mode='lines+markers',
+        mode='lines',
         line=dict(width=3, color=cor1),
         stackgroup='one',
     ))
     fig.add_trace(go.Scatter(
         x=values, y=y2, name=var2,
-        mode='lines+markers',
+        mode='lines',
         line=dict(width=3, color=cor2),
         stackgroup='two'
     ))
     fig.add_trace(go.Scatter(
         x=values, y=y3, name=var3,
-        mode='lines+markers',
+        mode='lines',
         line=dict(width=3, color=cor3),
         stackgroup='three'
     ))
     fig.add_trace(go.Scatter(
         x=values, y=y4, name=var4,
-        mode='lines+markers',
+        mode='lines',
         line=dict(width=3, color=cor4),
         stackgroup='four'
     ))
+
     fig.add_trace(go.Scatter(
         x=values, y=y5, name=var5,
-        mode='lines+markers',
+        mode='lines',
         line=dict(width=3, color=cor5),
         stackgroup='five'
     ))
 
+
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-        legend=dict(font_size=8, orientation="h", yanchor="top", y=1.20, xanchor="center", x=0.5),
-        height=300, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=10, t=40)
+        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.20, xanchor="center", x=0.5),
+        height=315, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=50)
     )
     fig.update_yaxes(
-        title_text="Eixo Y - " + basedados + " por " + agrupamento, title_font=dict(family='Sans-serif', size=12),
-        tickfont=dict(family='Sans-serif', size=12), nticks=5, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
+        title_text="Número de " + agrupamento, title_font=dict(family='Sans-serif', size=14),
+        tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
     )
     fig.update_xaxes(
         dtick=5, tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False
     )
+
 
     return fig
 
@@ -401,34 +416,34 @@ def area_norm(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4, co
     y5 = df[var5]
 
     fig.add_trace(go.Scatter(
-        x=values, y=y1, name=var1,
-        mode='lines+markers',
-        line=dict(width=3, color=cor1),
+        x=values, y=y5, name=var5,
+        mode='lines',
+        line=dict(width=3, color=cor5),
         stackgroup='one',
         groupnorm='percent'  # sets the normalization for the sum of the stackgroup
     ))
     fig.add_trace(go.Scatter(
-        x=values, y=y2, name=var2,
-        mode='lines+markers',
-        line=dict(width=3, color=cor2),
-        stackgroup='one'
-    ))
-    fig.add_trace(go.Scatter(
-        x=values, y=y3, name=var3,
-        mode='lines+markers',
-        line=dict(width=3, color=cor3),
-        stackgroup='one'
-    ))
-    fig.add_trace(go.Scatter(
         x=values, y=y4, name=var4,
-        mode='lines+markers',
+        mode='lines',
         line=dict(width=3, color=cor4),
         stackgroup='one'
     ))
     fig.add_trace(go.Scatter(
-        x=values, y=y5, name=var5,
-        mode='lines+markers',
-        line=dict(width=3, color=cor5),
+        x=values, y=y3, name=var3,
+        mode='lines',
+        line=dict(width=3, color=cor3),
+        stackgroup='one'
+    ))
+    fig.add_trace(go.Scatter(
+        x=values, y=y2, name=var2,
+        mode='lines',
+        line=dict(width=3, color=cor2),
+        stackgroup='one'
+    ))
+    fig.add_trace(go.Scatter(
+        x=values, y=y1, name=var1,
+        mode='lines',
+        line=dict(width=3, color=cor1),
         stackgroup='one'
     ))
 
@@ -442,11 +457,11 @@ def area_norm(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4, co
 
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-        legend=dict(font_size=8, orientation="h", yanchor="top", y=1.20, xanchor="center", x=0.5),
-        height=300, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=10, t=40)
+        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.20, xanchor="center", x=0.50),
+        height=315, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=50)
     )
     fig.update_yaxes(
-        title_text="Eixo Y - " + basedados + " por " + agrupamento, title_font=dict(family='Sans-serif', size=12),
+        title_text="Número de " + agrupamento, title_font=dict(family='Sans-serif', size=14),
         tickfont=dict(family='Sans-serif', size=12), nticks=5, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
     )
     fig.update_xaxes(
@@ -454,3 +469,4 @@ def area_norm(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4, co
     )
 
     return fig
+
