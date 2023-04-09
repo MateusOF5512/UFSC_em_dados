@@ -121,11 +121,11 @@ def bar_plot(df, var1, var2, cor1, agrupamento):
         marker_color=cor1))
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-        height=300, margin=dict(l=80, r=20, b=0, t=30), autosize=False,
+        height=315, margin=dict(l=80, r=20, b=10, t=30), autosize=False,
         dragmode=False, hovermode="x", clickmode="event+select")
     fig.update_yaxes(
-        title_text=agrupamento+": "+var2, title_font=dict(family='Sans-serif', size=10),
-        tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3')
+        title_text=agrupamento+": "+var2, title_font=dict(family='Sans-serif', size=12),
+        tickfont=dict(family='Sans-serif', size=12), nticks=8, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3')
     fig.update_xaxes(
         dtick=5, tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False
     )
@@ -184,11 +184,11 @@ def bar_emp_plot(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4,
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
         legend=dict(font_size=10, orientation="h", yanchor="top", y=1.15, xanchor="center", x=0.40),
-        height=315, hovermode=None, autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=50),
+        height=315, hovermode=None, autosize=False, dragmode=False, margin=dict(l=80, r=20, b=10, t=50),
         clickmode="event+select", barmode='stack'
     )
     fig.update_yaxes(
-        title_text="Número de " + agrupamento, title_font=dict(family='Sans-serif', size=14),
+        title_text="Número por tipo de " + agrupamento, title_font=dict(family='Sans-serif', size=12),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
     )
     fig.update_xaxes(
@@ -246,12 +246,12 @@ def bar_group_plot(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor
 
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.15, xanchor="center", x=0.40),
-        height=315, hovermode=None, autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=50),
+        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.15, xanchor="center", x=0.45),
+        height=315, hovermode=None, autosize=False, dragmode=False, margin=dict(l=80, r=20, b=10, t=50),
         clickmode="event+select", barmode='group'
     )
     fig.update_yaxes(
-        title_text="Número de " + agrupamento, title_font=dict(family='Sans-serif', size=14),
+        title_text="Número por tipo de " + agrupamento, title_font=dict(family='Sans-serif', size=12),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
     )
     fig.update_xaxes(
@@ -294,11 +294,12 @@ def line_mult_plot(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor
 
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
-        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.15, xanchor="center", x=0.40),
-        height=315, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=50)
+        legend=dict(font_size=10, orientation="h", yanchor="top", y=1.15, xanchor="center", x=0.45),
+        height=315, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=10, t=50),
+        clickmode="event+select"
     )
     fig.update_yaxes(
-        title_text="Número de " + agrupamento, title_font=dict(family='Sans-serif', size=14),
+        title_text="Número por tipo de " + agrupamento, title_font=dict(family='Sans-serif', size=12),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
     )
     fig.update_xaxes(
@@ -327,10 +328,11 @@ def line_plot(df, varx, vary, cor1, agrupamento):
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
         legend=dict(font_size=10, orientation="h", yanchor="top", y=1.10, xanchor="center", x=0.35),
-        height=300, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=30)
+        height=315, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=30),
+        clickmode="event+select",
     )
     fig.update_yaxes(
-        title_text=agrupamento + ": " + vary, title_font=dict(family='Sans-serif', size=10),
+        title_text=agrupamento + ": " + vary, title_font=dict(family='Sans-serif', size=12),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3')
     fig.update_xaxes(
         dtick=5, tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False
@@ -395,7 +397,7 @@ def area(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4, cor5, b
         height=315, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=50)
     )
     fig.update_yaxes(
-        title_text="Número de " + agrupamento, title_font=dict(family='Sans-serif', size=14),
+        title_text="Número por tipo de " + agrupamento, title_font=dict(family='Sans-serif', size=12),
         tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
     )
     fig.update_xaxes(
@@ -461,7 +463,7 @@ def area_norm(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4, co
         height=315, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=50)
     )
     fig.update_yaxes(
-        title_text="Número de " + agrupamento, title_font=dict(family='Sans-serif', size=14),
+        title_text="Número por tipo de " + agrupamento, title_font=dict(family='Sans-serif', size=12),
         tickfont=dict(family='Sans-serif', size=12), nticks=5, showgrid=True, gridwidth=0.5, gridcolor='#D3D3D3'
     )
     fig.update_xaxes(
