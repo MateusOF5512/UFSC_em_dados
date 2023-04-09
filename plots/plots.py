@@ -460,7 +460,7 @@ def area_norm(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4, co
     fig.update_layout(
         paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
         legend=dict(font_size=10, orientation="h", yanchor="top", y=1.20, xanchor="center", x=0.50),
-        height=315, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=0, t=50)
+        height=315, hovermode="x unified", autosize=False, dragmode=False, margin=dict(l=80, r=20, b=10, t=50)
     )
     fig.update_yaxes(
         title_text="Número por tipo de " + agrupamento, title_font=dict(family='Sans-serif', size=12),
