@@ -38,33 +38,33 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
 
             col1, col2 = st.columns([1, 7])
             with col1:
-                cor1 = st.color_picker('Cor 1', '#05A854', key=31)
+                cor1 = st.color_picker('', '#05A854', key=31)
             with col2:
-                vary_line1 = st.selectbox(agrupamento+' selecionado 1:', df_y.columns.unique(), index=1, key=32)
+                vary_line1 = st.selectbox('1° '+agrupamento+' selecionado:', df_y.columns.unique(), index=1, key=32)
 
             col1, col2 = st.columns([1, 7])
             with col1:
-                cor2 = st.color_picker('Cor 2', '#005BAB', key=33)
+                cor2 = st.color_picker('', '#005BAB', key=33)
             with col2:
-                vary_line2 = st.selectbox(agrupamento+' selecionado 2:', df_y.columns.unique(), index=2, key=34)
+                vary_line2 = st.selectbox('2° '+agrupamento+' selecionado:', df_y.columns.unique(), index=2, key=34)
 
             col1, col2 = st.columns([1, 7])
             with col1:
-                cor3 = st.color_picker('Cor 3', '#FFE400', key=35)
+                cor3 = st.color_picker('', '#FFE400', key=35)
             with col2:
-                vary_line3 = st.selectbox(agrupamento+' selecionado 3:', df_y.columns.unique(), index=0, key=36)
+                vary_line3 = st.selectbox('3° '+agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=36)
 
             col1, col2 = st.columns([1, 7])
             with col1:
-                cor4 = st.color_picker('Cor 4', '#ED1C24', key=37)
+                cor4 = st.color_picker('', '#ED1C24', key=37)
             with col2:
-                vary_line4 = st.selectbox(agrupamento+' selecionado 4:', df_y.columns.unique(), index=0, key=38)
+                vary_line4 = st.selectbox('4° '+agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=38)
 
             col1, col2 = st.columns([1, 7])
             with col1:
-                cor5 = st.color_picker('Cor 5', '#F37519', key=39)
+                cor5 = st.color_picker('', '#F37519', key=39)
             with col2:
-                vary_line5 = st.selectbox(agrupamento+' selecionado 5:', df_y.columns.unique(), index=0, key=40)
+                vary_line5 = st.selectbox('5° '+agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=40)
 
         st.markdown('---')
 
@@ -94,26 +94,41 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
     max = str(df['ANO'].max())
     min = str(df['ANO'].min())
 
-    if grafico == 'Barra Simples' or grafico == 'Linha Simples':
-        st.markdown("<h3 style='font-size:125%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
-                    "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
-                    " - " + max + " | " + grafico + "</h3>", unsafe_allow_html=True)
-        st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
-                    "><b>" + agrupamento + " selecionado:</b> " + vary_line + "</p>", unsafe_allow_html=True)
+    if basedados == "População Universitária":
 
-    elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or grafico == 'Multiplas Áreas':
-        st.markdown("<h3 style='font-size:125%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
-                    "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
-                    " - " + max + " | "+grafico+"</h3>", unsafe_allow_html=True)
-        st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
-                    "><b>" + agrupamento + " selecionado:</b> " + vary_line1 + ",  "+vary_line2+",  "+vary_line3+",  "+vary_line4+" e  "+vary_line5+"</p>", unsafe_allow_html=True)
+        if grafico == 'Barra Simples' or grafico == 'Linha Simples':
+            st.markdown("<h3 style='font-size:125%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                        "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                        " - " + max + " | " + grafico + "</h3>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                        "><b>" + agrupamento + " selecionado:</b> " + vary_line + "</p>", unsafe_allow_html=True)
 
-    elif grafico == 'Área Normalizada':
-        st.markdown("<h3 style='font-size:120%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
-                    "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
-                    " - " + max + " | "+grafico+"</h3>", unsafe_allow_html=True)
-        st.markdown("<p style='font-size:90%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
-                    "><b>" + agrupamento + " selecionado:</b> " + vary_line1 + ",  "+vary_line2+",  "+vary_line3+",  "+vary_line4+" e  "+vary_line5+"</p>", unsafe_allow_html=True)
+        elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
+                grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
+            st.markdown("<h3 style='font-size:125%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                        "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                        " - " + max + " | "+grafico+"</h3>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                        "><b>" + agrupamento + " selecionado:</b> " + vary_line1 + ",  "+vary_line2+
+                        ",  "+vary_line3+",  "+vary_line4+" e  "+vary_line5+"</p>", unsafe_allow_html=True)
+
+    elif basedados == "Vagas no Vestibular":
+
+        if grafico == 'Barra Simples' or grafico == 'Linha Simples':
+            st.markdown("<h3 style='font-size:125%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                        "><b>" + basedados + "</b>: n° por <b>" + agrupamento + " - análise temporal | " + min +
+                        " - " + max + " | " + grafico + "</h3>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                        "><b>" + agrupamento + " selecionado:</b> " + vary_line + "</p>", unsafe_allow_html=True)
+
+        elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
+                grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
+            st.markdown("<h3 style='font-size:125%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                        "><b>" + basedados + "</b>: n° por <b>" + agrupamento + " - análise temporal | " + min +
+                        " - " + max + " | " + grafico + "</h3>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                        "><b>" + agrupamento + " selecionado:</b> " + vary_line1 + ",  " + vary_line2 +
+                        ",  " + vary_line3 + ",  " + vary_line4 + " e  " + vary_line5 + "</p>",unsafe_allow_html=True)
 
     if grafico == 'Barra Simples' or grafico == 'Linha Simples':
         return fig1, varx_line, vary_line
@@ -153,13 +168,15 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
 
             if len(selected_rows) == 0:
                 prompt2 = (
-                    f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
+                    f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+
+                    f" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
                     f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
                     f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
                     f"Elabore o resumo com base nos Dados disponibilizados observando cada década e suas métricas:\n")
             elif len(selected_rows) != 0:
                 prompt2 = (
-                    f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
+                    f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+
+                    f" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
                     f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
                     f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
                     f"Elabore o resumo com base nos Dados disponibilizados observando cada ANO e suas métricas:\n")
@@ -173,9 +190,11 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
             st.markdown('---')
 
             if len(api_key) == 0:
-                st.warning('Para visualizar as informações geradas pelo ChatGPT-3, é necessário adicionar sua API-Key na caixa de texto localizada na parte superior da tela. '
-                        'Caso ainda não tenha uma chave de API, você pode criá-la acessando o seguinte endereço: https://platform.openai.com/account/api-keys.',
-                        icon='🗝️')
+                st.warning(
+                    'Para visualizar as informações geradas pelo ChatGPT-3, é necessário adicionar sua API-Key '
+                    'na caixa de texto localizada na parte superior da tela. Caso ainda não tenha uma chave de API, '
+                    'você pode criá-la acessando o seguinte endereço: https://platform.openai.com/account/api-keys.',
+                    icon='🗝️')
             elif len(api_key) != 0:
                 summary2 = generate_summary(prompt2, "text-davinci-003", temperature, api_key)
                 st.markdown("<h3 style='font-size:120%; text-align: center; color: #05A854;'" +
@@ -244,7 +263,7 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
 def relatorio(df, basedados, agrupamento):
 
     st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 20px 0px 0px 0px;'" +
-                ">Informações Básicas sobre a Tabela selecionada:</h3>", unsafe_allow_html=True)
+                ">Relatório Básico sobre a Tabela selecionada:</h3>", unsafe_allow_html=True)
     st.markdown("<p style='font-size:120%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
                 ">"+basedados+" agrupapados por tipo de "+agrupamento+"</p>", unsafe_allow_html=True)
     st.markdown('---')
@@ -267,7 +286,7 @@ def relatorio(df, basedados, agrupamento):
         st.dataframe(df_des)
     st.markdown('---')
 
-    text = """Para gerar os relatórios, utilizamos o pandas-profiling, uma ferramenta que proporciona uma análise 
+    text = """Para gerar o relatório, utilizamos o pandas-profiling, uma ferramenta que proporciona uma análise 
     profunda, rápida e simples dos dados. Essa ferramenta gera automaticamente relatórios personalizados para cada 
     variável do conjunto de dados, apresentando estatísticas, gráficos, alertas, correlações e outras informações 
     relevantes. É importante ressaltar que o tempo de geração dos relatórios pode variar de alguns segundos a alguns 
@@ -275,12 +294,15 @@ def relatorio(df, basedados, agrupamento):
 
 
     st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 20px 0px 0px 0px;'" +
-                ">Informações Avançadas - Exploratory Data Analysis (EDA) com Pandas profiling:</h3>", unsafe_allow_html=True)
+                ">Relatório Avançado - Exploratory Data Analysis (EDA) com Pandas profiling:</h3>", unsafe_allow_html=True)
     st.markdown('---')
 
     col1, col2 = st.columns([2, 10])
     with col1:
-        report = st.checkbox("🔎 Carregar EDA: ", key=41)
+        st.text('')
+        st.text('')
+        st.text('')
+        report = st.checkbox("🔎 Carregar relatório avançado: ", key=41)
     with col2:
         st.info(text)
     st.markdown('---')
