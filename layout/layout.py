@@ -20,11 +20,6 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
                 df_y = df.drop('ANO', axis=1)
                 vary_line = st.selectbox(agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=2)
                 varx_line = 'ANO'
-            st.text('')
-            st.text('')
-            st.text('')
-            st.text('')
-            st.text('')
 
         elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
                 grafico == 'Multiplas Linhas' or grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
@@ -160,30 +155,29 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
 
     if grafico == 'Barra Simples' or grafico == 'Linha Simples':
 
-        with st.expander("Análise descritiva gerada por Inteligencia Artificial 🤖"):
+        with st.expander("Análise descritiva guiada por modelo de linguagem de inteligência artificial 🤖"):
 
             st.markdown("<h3 style='font-size:130%; text-align: center; color: #05A854; font:'sans serif';" +
                         ">Configure o ChatGPT-3 para análisar os dados: <br>"+vary_line+" entre "+min+" e "+max+"</h3>", unsafe_allow_html=True)
 
-
             if len(selected_rows) == 0:
                 prompt2 = (
-                    f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+
-                    f" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
-                    f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
-                    f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
-                    f"Elabore o resumo com base nos Dados disponibilizados observando cada década e suas métricas:\n")
+                        f"Os dados do gráfico são uma analise tempotal de " + min + " até " + max +
+                        f" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
+                        f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
+                        f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
+                        f"Elabore o resumo com base nos Dados disponibilizados observando cada década e suas métricas:\n")
             elif len(selected_rows) != 0:
                 prompt2 = (
-                    f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+
-                    f" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
-                    f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
-                    f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
-                    f"Elabore o resumo com base nos Dados disponibilizados observando cada ANO e suas métricas:\n")
+                        f"Os dados do gráfico são uma analise tempotal de " + min + " até " + max +
+                        f" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
+                        f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
+                        f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
+                        f"Elabore o resumo com base nos Dados disponibilizados observando cada ANO e suas métricas:\n")
 
             col1, col2 = st.columns([2, 2])
             with col1:
-                api_key = st.text_input('Adicione sua API-Key - OpenAI:')
+                api_key = st.text_input('Adicione sua API Key | OpenAI:')
             with col2:
                 temperature = st.slider('Regule a criatividade do ChatGPT3:',
                                         min_value=0.1, max_value=1.0, value=0.8, step=0.1, key=10)
@@ -196,7 +190,7 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
                     'você pode criá-la acessando o seguinte endereço: https://platform.openai.com/account/api-keys.',
                     icon='🗝️')
             elif len(api_key) != 0:
-                summary2 = generate_summary(prompt2, "text-davinci-003", temperature, api_key)
+                summary2 = generate_summary(prompt2, temperature, api_key)
                 st.markdown("<h3 style='font-size:120%; text-align: center; color: #05A854;'" +
                             ">Análise descritiva dos dados apresentados no gráfico</h3>", unsafe_allow_html=True)
 
@@ -205,18 +199,18 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
 
                 if len(selected_rows) == 0:
                     solicitacao = st.text_area('Faça uma pergunta sobre os dados apresentados no gráfico:',
-                                                'Exemplo: qual a variação percentual a cada década?', key="placeholder")
+                                               'Exemplo: qual a variação percentual a cada década?', key="placeholder")
 
                 elif len(selected_rows) != 0:
                     solicitacao = st.text_area('Faça uma pergunta sobre os dados apresentados no gráfico:',
-                                                'Exemplo: qual a variação percentual a cada ano?', key="placeholder")
+                                               'Exemplo: qual a variação percentual a cada ano?', key="placeholder")
 
                 if len(api_key) != 0 and len(solicitacao) != 0:
                     prompt3 = (
                         f"Dados do DataFrame: {df[[varx_line, vary_line]].to_string(index=False)}.\n"
                         f"Usando os Dados resolva a pergunta: {solicitacao}:\n"
                         f"Resposta final apresente uma tabela em markdown com a solução da pergunta:\n")
-                    summary3 = generate_summary(prompt3, "text-davinci-003", temperature, api_key)
+                    summary3 = generate_summary(prompt3, temperature, api_key)
                     st.write(summary3)
 
             st.markdown('---')
@@ -323,7 +317,7 @@ def rodape():
       margin-right: auto;
       border-style: inset;
       border-width: 1.5px;">
-      <p style="color:#05A854; text-align: center;">Última atualização: 08/04/23 | mateus7ortiz@gmail.com</p>
+      <p style="color:#05A854; text-align: center;">Última atualização: 25/04/23 | mateus7ortiz@gmail.com</p>
     """
     st.markdown(html_rodpe, unsafe_allow_html=True)
 
@@ -414,7 +408,7 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
 
     if grafico == 'Barra Simples' or grafico == 'Linha Simples':
         with st.expander("Análise descritiva gerada por Inteligencia Artificial 🤖"):
-            st.markdown("<h3 style='font-size:130%; text-align: center; color: #05A854; font:'sans serif';" +
+            st.markdown("<h3 style='font-size:100%; text-align: center; color: #05A854; font:'sans serif';" +
                         ">Configure o ChatGPT-3 para análisar os dados: <br>"+vary_line+" entre "+min+" e "+max+"</h3>", unsafe_allow_html=True)
 
 
@@ -433,9 +427,9 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
 
             col1, col2 = st.columns([2, 2])
             with col1:
-                api_key = st.text_input('Adicione sua API-Key - OpenAI:')
+                api_key = st.text_input('Adicione sua API Key | OpenAI:')
             with col2:
-                temperature = st.slider('Regule a criatividade do ChatGPT3:',
+                temperature = st.slider('Regule a criatividade do ChatGPT:',
                                         min_value=0.1, max_value=1.0, value=0.8, step=0.1, key=51)
             st.markdown('---')
 
