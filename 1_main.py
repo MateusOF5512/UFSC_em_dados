@@ -19,8 +19,8 @@ st.markdown("<h1 style='font-size:250%; text-align: center; color: #05A854; padd
                 ">UFSC em Dados</h1>", unsafe_allow_html=True)
 st.markdown('---')
 
-st.markdown("""<style> .css-hxt7ib.e1fqkh3o5 {margin-top: -90px;}</style>""", unsafe_allow_html=True)
-st.markdown("""<style> .css-18e3th9.egzxvld2 {margin-top: -50px;}</style>""", unsafe_allow_html=True)
+st.markdown("""<style> .css-1544g2n.e1fqkh3o4 {margin-top: -60px;}</style>""", unsafe_allow_html=True)
+st.markdown("""<style> .css-uf99v8.egzxvld5 {margin-top: -50px;}</style>""", unsafe_allow_html=True)
 
 with st.sidebar:
     col1, col2, col3 = st.columns([2, 4, 2])
@@ -32,6 +32,13 @@ with st.sidebar:
         st.write('')
 
     st.markdown('---')
+    st.text('')
+    st.text('')
+
+    st.markdown(
+        "<h3 style='font-size:140%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -40px;'" +
+        ">Painel de controle:</h3>", unsafe_allow_html=True)
+
     basedados = st.selectbox("Selecione a tabela para análise:",
                              options=["População Universitária",
                                       "Vagas no Vestibular"], index=0)
@@ -65,6 +72,14 @@ with st.sidebar:
             df = df.groupby("CAMPUS").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
 
         df = df.astype(int)
+
+    st.markdown('---')
+
+    st.text('')
+    st.text('')
+    st.markdown(
+        "<h3 style='font-size:130%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -40px;'" +
+        ">Manipulação dos dados e gráficos:</h3>", unsafe_allow_html=True)
 
     with st.expander("🎲️ Filtrar os dados"):
         ano_max = int(df['ANO'].max())
