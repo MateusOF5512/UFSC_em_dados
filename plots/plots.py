@@ -2,14 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 import numpy as np
-from plotly.subplots import make_subplots
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
-from wordcloud import STOPWORDS
 from PIL import Image
-
-from pandas_profiling import ProfileReport
-from streamlit_pandas_profiling import st_profile_report
 
 from st_aggrid import AgGrid
 from st_aggrid.grid_options_builder import GridOptionsBuilder
@@ -18,7 +11,8 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import openai
 
-@st.cache
+
+@st.cache_data
 def load_google_sheet(tabela):
     # Autenticação do Google
     scope = ['https://spreadsheets.google.com/feeds',
@@ -56,7 +50,7 @@ def tratamento2(df):
 
     return df
 
-def generate_summary(prompt, engine, temperature, api_key):
+def generate_summary(prompt, temperature, api_key):
     openai.api_key = api_key
 
     max_context_length = 2049  # tamanho máximo do contexto do GPT-3
@@ -69,7 +63,7 @@ def generate_summary(prompt, engine, temperature, api_key):
         max_completion_length = 1024
 
     completion = openai.Completion.create(
-        engine=engine,
+        engine='text-davinci-003',
         prompt=prompt,
         max_tokens=max_completion_length,
         n=1,
@@ -82,6 +76,8 @@ def generate_summary(prompt, engine, temperature, api_key):
 
     return completion.choices[0].text
 
+
+    return agent.run(prompt)
 
 
 
@@ -469,6 +465,34 @@ def area_norm(df, var0, var1, var2, var3, var4, var5, cor1, cor2, cor3, cor4, co
     fig.update_xaxes(
         dtick=5, tickfont=dict(family='Sans-serif', size=12), nticks=10, showgrid=False
     )
+
+    return fig
+
+
+def plot_point(df, varx, vary, varz, colorscales):
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(x=df[varx], y=df[vary], customdata=df[varz],
+                             mode='markers', name='',
+                             hovertemplate="</br><b>Ano:</b> %{customdata}"+
+                                           "</br><b>"+varx+":</b> %{x:,.0f}" +
+                                           "</br><b>"+vary+":</b> %{y:,.0f}",
+                             marker=dict(
+                                 size=25,
+                                 color=((df[varx] + df[vary]) / 2),
+                                 colorscale=colorscales,
+                                 showscale=True)
+                             ))
+    fig.update_layout(
+        paper_bgcolor="#F8F8FF", plot_bgcolor="#F8F8FF", font={'color': "#000000", 'family': "sans-serif"},
+        height=315, margin=dict(l=80, r=20, b=10, t=30))
+    fig.update_xaxes(
+        title_text=varx, title_font=dict(family='Sans-serif', size=12), zeroline=False,
+        tickfont=dict(family='Sans-serif', size=12), nticks=7, showgrid=True, gridwidth=0.8, gridcolor='#D3D3D3')
+    fig.update_yaxes(
+        title_text=vary, title_font=dict(family='Sans-serif', size=12), zeroline=False,
+        tickfont=dict(family='Sans-serif', size=14), nticks=7, showgrid=True, gridwidth=0.8, gridcolor='#D3D3D3')
 
     return fig
 
