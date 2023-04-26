@@ -78,7 +78,7 @@ with st.sidebar:
     st.text('')
     st.text('')
     st.markdown(
-        "<h3 style='font-size:130%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -40px;'" +
+        "<h3 style='font-size:120%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -40px;'" +
         ">Manipulação dos dados e gráficos:</h3>", unsafe_allow_html=True)
 
     with st.expander("🎲️ Filtrar os dados"):
@@ -98,7 +98,7 @@ with st.sidebar:
         st.markdown('---')
 
     grafico = st.selectbox('Tipo do Gráfico:',
-                           ['Barra Simples', 'Linha Simples', 'Barras Empilhadas', 'Barras Agrupadas',
+                           ['Barra Simples', 'Linha Simples', 'Dispersão Simples', 'Barras Empilhadas', 'Barras Agrupadas',
                             'Multiplas Linhas', 'Multiplas Áreas', 'Área Normalizada'],
                            index=0, key=98)
 
