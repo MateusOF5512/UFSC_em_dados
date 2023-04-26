@@ -1,7 +1,4 @@
-import sqlite3
-
 import streamlit
-
 from plots.plots import *
 
 from pandas_profiling import ProfileReport
@@ -18,8 +15,8 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
                 cor1 = st.color_picker('', '#05A854', key=1)
             with col2:
                 df_y = df.drop('ANO', axis=1)
-                vary_line = st.selectbox(agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=2)
-                varx_line = 'ANO'
+                vary = st.selectbox(agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=2)
+                varx = 'ANO'
 
         elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
                 grafico == 'Multiplas Linhas' or grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
@@ -61,13 +58,28 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
             with col2:
                 vary_line5 = st.selectbox('5° '+agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=40)
 
+
+        elif grafico == 'Dispersão Simples':
+            df_bolhas = df.drop('ANO', axis=1)
+            vary = st.selectbox('Eixo X - ' + agrupamento + ' selecionado:', df_bolhas.columns.unique(), index=1, key=51)
+            varx = st.selectbox('Eixo Y - ' + agrupamento + ' selecionado:', df_bolhas.columns.unique(), index=0, key=52)
+
+            colorscales = ['Balance', 'Bluered', 'Cividis',
+               'Delta', 'Dense', 'Electric', 'Greys', 'Hot',
+               'HSV', 'Ice', 'Icefire', 'Inferno',
+               'Matter', 'Picnic', 'Portland', 'Rainbow',
+               'Solar', 'Spectral', 'Speed', 'Sunsetdark', 'Tempo',
+               'Temps', 'Thermal', 'Twilight',
+               'Viridis']
+
+            colorscales = st.selectbox('Escala de cor selecionada:', colorscales, index=24, key=53)
+
         st.markdown('---')
 
     if grafico == 'Linha Simples':
-        fig1 = line_plot(df, varx_line, vary_line, cor1, agrupamento)
+        fig1 = line_plot(df, varx, vary, cor1, agrupamento)
     elif grafico == 'Barra Simples':
-
-        fig1 = bar_plot(df, varx_line, vary_line, cor1, agrupamento)
+        fig1 = bar_plot(df, varx, vary, cor1, agrupamento)
 
     elif grafico == 'Barras Empilhadas':
         fig1 = bar_emp_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
@@ -86,6 +98,9 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
         fig1 = area_norm(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
                               cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
 
+    elif grafico == 'Dispersão Simples':
+        fig1 = plot_point(df, varx, vary, 'ANO', colorscales)
+
     max = str(df['ANO'].max())
     min = str(df['ANO'].min())
 
@@ -96,7 +111,7 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
                         "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
                         " - " + max + " | " + grafico + "</h3>", unsafe_allow_html=True)
             st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
-                        "><b>" + agrupamento + " selecionado:</b> " + vary_line + "</p>", unsafe_allow_html=True)
+                        "><b>" + agrupamento + " selecionado:</b> " + vary + "</p>", unsafe_allow_html=True)
 
         elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
                 grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
@@ -107,6 +122,14 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
                         "><b>" + agrupamento + " selecionado:</b> " + vary_line1 + ",  "+vary_line2+
                         ",  "+vary_line3+",  "+vary_line4+" e  "+vary_line5+"</p>", unsafe_allow_html=True)
 
+        elif grafico == 'Dispersão Simples':
+            st.markdown(
+                "<h3 style='font-size:120%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                " - " + max + " | " + grafico + "</h3>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                        "><b>" + agrupamento + " selecionados:</b> " + varx + " e " + vary + " por ANO</p>", unsafe_allow_html=True)
+
     elif basedados == "Vagas no Vestibular":
 
         if grafico == 'Barra Simples' or grafico == 'Linha Simples':
@@ -114,7 +137,7 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
                         "><b>" + basedados + "</b>: n° por <b>" + agrupamento + " - análise temporal | " + min +
                         " - " + max + " | " + grafico + "</h3>", unsafe_allow_html=True)
             st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
-                        "><b>" + agrupamento + " selecionado:</b> " + vary_line + "</p>", unsafe_allow_html=True)
+                        "><b>" + agrupamento + " selecionado:</b> " + vary + "</p>", unsafe_allow_html=True)
 
         elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
                 grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
@@ -126,11 +149,14 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
                         ",  " + vary_line3 + ",  " + vary_line4 + " e  " + vary_line5 + "</p>",unsafe_allow_html=True)
 
     if grafico == 'Barra Simples' or grafico == 'Linha Simples':
-        return fig1, varx_line, vary_line
+        return fig1, varx, vary
 
     elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
             grafico == 'Multiplas Linhas' or grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
         return fig1, vary_line1, vary_line2, vary_line3, vary_line4, vary_line5
+
+    elif grafico == 'Dispersão Simples':
+        return fig1, varx, vary
 
 
 
@@ -142,11 +168,15 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
 
 
     if grafico == 'Barra Simples' or grafico == 'Linha Simples':
-        fig1, varx_line, vary_line = sidebar_variaveis(df, grafico, basedados, agrupamento)
+        fig1, varx, vary = sidebar_variaveis(df, grafico, basedados, agrupamento)
 
     elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
             grafico == 'Multiplas Linhas' or grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
         fig1, vary_line1, vary_line2, vary_line3, vary_line4, vary_line5 = sidebar_variaveis(df, grafico, basedados, agrupamento)
+
+    elif grafico == 'Dispersão Simples':
+        fig1, varx, vary = sidebar_variaveis(df, grafico, basedados, agrupamento)
+
 
     st.plotly_chart(fig1, use_container_width=True, config=config)
 
@@ -158,21 +188,21 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
         with st.expander("Análise descritiva guiada por modelo de linguagem de inteligência artificial 🤖"):
 
             st.markdown("<h3 style='font-size:130%; text-align: center; color: #05A854; font:'sans serif';" +
-                        ">Configure o ChatGPT-3 para análisar os dados: <br>"+vary_line+" entre "+min+" e "+max+"</h3>", unsafe_allow_html=True)
+                        ">Configure o ChatGPT-3 para análisar os dados: <br>"+vary+" entre "+min+" e "+max+"</h3>", unsafe_allow_html=True)
 
             if len(selected_rows) == 0:
                 prompt2 = (
                         f"Os dados do gráfico são uma analise tempotal de " + min + " até " + max +
                         f" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
-                        f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
-                        f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
+                        f"Dados do gráfico: {df[[varx, vary]].to_string(index=False)}, "
+                        f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary}.\n"
                         f"Elabore o resumo com base nos Dados disponibilizados observando cada década e suas métricas:\n")
             elif len(selected_rows) != 0:
                 prompt2 = (
                         f"Os dados do gráfico são uma analise tempotal de " + min + " até " + max +
                         f" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
-                        f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
-                        f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
+                        f"Dados do gráfico: {df[[varx, vary]].to_string(index=False)}, "
+                        f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary}.\n"
                         f"Elabore o resumo com base nos Dados disponibilizados observando cada ANO e suas métricas:\n")
 
             col1, col2 = st.columns([2, 2])
@@ -207,7 +237,7 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
 
                 if len(api_key) != 0 and len(solicitacao) != 0:
                     prompt3 = (
-                        f"Dados do DataFrame: {df[[varx_line, vary_line]].to_string(index=False)}.\n"
+                        f"Dados do DataFrame: {df[[varx, vary]].to_string(index=False)}.\n"
                         f"Usando os Dados resolva a pergunta: {solicitacao}:\n"
                         f"Resposta final apresente uma tabela em markdown com a solução da pergunta:\n")
                     summary3 = generate_summary(prompt3, temperature, api_key)
@@ -216,18 +246,18 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
             st.markdown('---')
 
         with st.expander("Conferir Dados do Gráfico 🔎️ "):
-            df_barra = df[[varx_line, vary_line]]
+            df_barra = df[[varx, vary]]
 
             checkdf = st.checkbox('Visualizar Dados', key=70)
             if checkdf:
                 st.markdown("<h3 style='font-size:100%; text-align: center; color: #05A854;'" +
-                            "><i>Analise Temporal " + min + " a " + max + ": " + vary_line + "</i> - TABELA RESUMIDA</h3>",
+                            "><i>Analise Temporal " + min + " a " + max + ": " + vary + "</i> - TABELA RESUMIDA</h3>",
                             unsafe_allow_html=True)
                 agg_tabela(df_barra, use_checkbox=False)
 
             df_barra = df_barra.to_csv(index=False).encode('utf-8')
             st.download_button(label="Download Dados", data=df_barra,
-                               file_name="Analise_Temporal_" + min + "_" + max + "_" + vary_line + ".csv", mime='csv')
+                               file_name="Analise_Temporal_" + min + "_" + max + "_" + vary + ".csv", mime='csv')
 
     elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas':
         with st.expander("Análise descritiva gerada por Inteligencia Artificial 🤖"):
@@ -394,7 +424,7 @@ def boasvindas():
 
 def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
     if grafico == 'Barra Simples' or grafico == 'Linha Simples':
-        fig1, varx_line, vary_line = sidebar_variaveis(df, grafico, basedados, agrupamento)
+        fig1, varx, vary = sidebar_variaveis(df, grafico, basedados, agrupamento)
 
     elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
             grafico == 'Multiplas Linhas' or grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
@@ -409,20 +439,20 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
     if grafico == 'Barra Simples' or grafico == 'Linha Simples':
         with st.expander("Análise descritiva gerada por Inteligencia Artificial 🤖"):
             st.markdown("<h3 style='font-size:100%; text-align: center; color: #05A854; font:'sans serif';" +
-                        ">Configure o ChatGPT-3 para análisar os dados: <br>"+vary_line+" entre "+min+" e "+max+"</h3>", unsafe_allow_html=True)
+                        ">Configure o ChatGPT-3 para análisar os dados: <br>"+vary+" entre "+min+" e "+max+"</h3>", unsafe_allow_html=True)
 
 
             if len(selected_rows) == 0:
                 prompt = (
                     f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
-                    f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
-                    f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
+                    f"Dados do gráfico: {df[[varx, vary]].to_string(index=False)}, "
+                    f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary}.\n"
                     f"Elabore o resumo com base nos Dados disponibilizados observando cada década e suas métricas:\n")
             elif len(selected_rows) != 0:
                 prompt = (
                     f"Os dados do gráfico são uma analise tempotal de "+min+" até "+max+" de informações sobre a Universidade Federal de Santa Catarina - Brasil.\n"
-                    f"Dados do gráfico: {df[[varx_line, vary_line]].to_string(index=False)}, "
-                    f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary_line}.\n"
+                    f"Dados do gráfico: {df[[varx, vary]].to_string(index=False)}, "
+                    f"o contexto da informações é a {basedados} de {agrupamento}  com número de: {vary}.\n"
                     f"Elabore o resumo com base nos Dados disponibilizados observando cada ANO e suas métricas:\n")
 
             col1, col2 = st.columns([2, 2])
@@ -455,7 +485,7 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
 
                 if len(api_key) != 0 and len(solicitacao) != 0:
                     prompt3 = (
-                        f"Dados do DataFrame: {df[[varx_line, vary_line]].to_string(index=False)}.\n"
+                        f"Dados do DataFrame: {df[[varx, vary]].to_string(index=False)}.\n"
                         f"Usando os Dados resolva a pergunta: {solicitacao}:\n"
                         f"Resposta final apresente uma tabela em markdown com a solução da pergunta:\n")
                     summary3 = generate_summary(prompt3, "text-davinci-003", temperature, api_key)
@@ -464,18 +494,18 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
             st.markdown('---')
 
         with st.expander("Conferir Dados do Gráfico 🔎️ "):
-            df_barra = df[[varx_line, vary_line]]
+            df_barra = df[[varx, vary]]
 
             checkdf = st.checkbox('Visualizar Dados', key=50)
             if checkdf:
                 st.markdown("<h3 style='font-size:100%; text-align: center; color: #05A854;'" +
-                            "><i>Analise Temporal " + min + " a " + max + ": " + vary_line + "</i> - TABELA RESUMIDA</h3>",
+                            "><i>Analise Temporal " + min + " a " + max + ": " + vary + "</i> - TABELA RESUMIDA</h3>",
                             unsafe_allow_html=True)
                 agg_tabela(df_barra, use_checkbox=False)
 
             df_barra = df_barra.to_csv(index=False).encode('utf-8')
             st.download_button(label="Download Dados", data=df_barra,
-                               file_name="Analise_Temporal_" + min + "_" + max + "_" + vary_line + ".csv", mime='csv')
+                               file_name="Analise_Temporal_" + min + "_" + max + "_" + vary + ".csv", mime='csv')
 
 
     elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
@@ -518,10 +548,6 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
 
 
 
-
-
-
-
-
-
     return None
+
+
