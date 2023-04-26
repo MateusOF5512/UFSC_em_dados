@@ -431,6 +431,9 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
         fig1, vary_line1, vary_line2, vary_line3, vary_line4, vary_line5 = sidebar_variaveis(df, grafico, basedados,
                                                                                              agrupamento)
 
+    elif grafico == 'Dispersão Simples':
+        fig1, varx, vary = sidebar_variaveis(df, grafico, basedados, agrupamento)
+
     st.plotly_chart(fig1, use_container_width=True, config=config)
 
     max = str(df['ANO'].max())
@@ -508,9 +511,9 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
                                file_name="Analise_Temporal_" + min + "_" + max + "_" + vary + ".csv", mime='csv')
 
 
-    elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
+    elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or grafico == 'Bolhas' or\
             grafico == 'Multiplas Linhas' or grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
-        with st.expander("Análise descritiva gerada por Inteligencia Artificial 🤖"):
+        with st.expander("Análise descritiva guiada por Inteligencia Artificial 🤖"):
 
             st.markdown('Em construção...')
 
@@ -539,6 +542,24 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
             checkdf = st.checkbox('Visualizar Dados do Gráfico', key=71)
             if checkdf:
 
+                agg_tabela(df_barra, use_checkbox=False)
+
+            df_barra = df_barra.to_csv(index=False).encode('utf-8')
+            st.download_button(label="Download Dados", data=df_barra,
+                               file_name="Analise_Temporal_"+min+"_"+max+"_"+basedados+"_"+agrupamento+".csv", mime='csv')
+
+    elif grafico == 'Dispersão Simples':
+        with st.expander("Análise descritiva guiada por Inteligencia Artificial 🤖"):
+
+            st.markdown('Em construção...')
+            st.markdown('---')
+
+        with st.expander("Conferir Dados do Gráfico 🔎️ "):
+
+            df_barra = df[['ANO', varx, vary]]
+
+            checkdf = st.checkbox('Visualizar Dados do Gráfico', key=71)
+            if checkdf:
                 agg_tabela(df_barra, use_checkbox=False)
 
             df_barra = df_barra.to_csv(index=False).encode('utf-8')
