@@ -42,13 +42,13 @@ with st.sidebar:
         "<h3 style='font-size:140%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -40px;'" +
         ">Painel de controle:</h3>", unsafe_allow_html=True)
 
-    basedados = st.selectbox("Selecione a tabela para análise:",
+    basedados = st.selectbox("Selecione uma tabela:",
                              options=["População Universitária",
                                       "Vagas no Vestibular",
                                       "Inscritos no Vestibular"], index=0)
 
     if basedados == "População Universitária":
-        agrupamento = st.radio('Selecione o agrupamento dos dados da tabela:',
+        agrupamento = st.radio('Selecione um agrupamento:',
                                ['Estudantes', 'Funcionários'], index=0, key=9,
                                horizontal=True)
         if agrupamento == 'Estudantes':
@@ -63,7 +63,7 @@ with st.sidebar:
         df = load_google_sheet(tabela="3")
         df = tratamento2(df)
 
-        agrupamento = st.radio('Selecione o agrupamento dos dados da Tabela:',
+        agrupamento = st.radio('Selecione um agrupamento dos dados para análise:',
                                ['Curso', 'Centro de Ensino', 'Campus'], index=0, key=9, horizontal=True)
 
         if agrupamento == 'Curso':
@@ -81,7 +81,7 @@ with st.sidebar:
         df = load_google_sheet(tabela="4")
         df = tratamento2(df)
 
-        agrupamento = st.radio('Selecione o agrupamento dos dados da Tabela:',
+        agrupamento = st.radio('Selecione um agrupamento:',
                                ['Curso', 'Centro de Ensino', 'Campus'], index=0, key=91, horizontal=True)
 
         if agrupamento == 'Curso':
@@ -167,6 +167,27 @@ with tab4:
     boasvindas()
 
 
-
+with st.sidebar:
+    st.text('')
+    st.text('')
+    st.text('')
+    st.text('')
+    st.text('')
+    st.text('')
+    st.text('')
+    st.text('')
+    st.text('')
+    st.text('')
+    rodpe = """
+        <hr style= "display: block;
+          margin-top: 0.5em;
+          margin-bottom: 0.5em;
+          margin-left: auto;
+          margin-right: auto;
+          border-style: inset;
+          border-width: 1.5px;">
+          <p style="color:#05A854; text-align: center;">Desenvolvedor: mateus7ortiz@gmail.com</p>
+        """
+    st.markdown(rodpe, unsafe_allow_html=True)
 
 rodape()
