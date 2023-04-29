@@ -81,7 +81,7 @@ def generate_summary(prompt, temperature, api_key):
 
 
 
-def agg_tabela(df, use_checkbox):
+def agg_tabela(df, use_checkbox, key):
 
     gb = GridOptionsBuilder.from_dataframe(df)
     gb.configure_pagination(enabled=False)
@@ -90,7 +90,7 @@ def agg_tabela(df, use_checkbox):
     gb.configure_selection(use_checkbox=use_checkbox, selection_mode='multiple')
     gb.configure_side_bar()
     gridoptions = gb.build()
-    df_grid = AgGrid(df, gridOptions=gridoptions, enable_enterprise_modules=True,
+    df_grid = AgGrid(df, gridOptions=gridoptions, enable_enterprise_modules=True, key=key,
                      update_mode=GridUpdateMode.SELECTION_CHANGED, height=300, width='100%')
     selected_rows = df_grid["selected_rows"]
     selected_rows = pd.DataFrame(selected_rows)
