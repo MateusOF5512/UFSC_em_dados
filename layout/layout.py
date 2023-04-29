@@ -12,6 +12,10 @@ def new_tabela(df):
 
 def sidebar_variaveis(df, grafico, basedados, agrupamento):
     with st.sidebar:
+        st.markdown(
+            "<h3 style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -20px;'" +
+            ">Seleção de variáveis:</h3>", unsafe_allow_html=True)
+
         if grafico == 'Barra Simples' or grafico == 'Linha Simples':
             col1, col2 = st.columns([1, 8])
             with col1:
@@ -30,6 +34,7 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
             df = df[cols]
 
             df_y = df.drop('ANO', axis=1)
+
 
             col1, col2 = st.columns([1, 8])
             with col1:
@@ -170,6 +175,10 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
 
 def new_grafico(df, grafico, basedados, agrupamento):
     with st.sidebar:
+        st.markdown(
+            "<h3 style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -20px;'" +
+            ">Seleção de variáveis: (2)</h3>", unsafe_allow_html=True)
+
         if grafico == 'Barra Simples' or grafico == 'Linha Simples':
             col1, col2 = st.columns([1, 8])
             with col1:
@@ -242,7 +251,6 @@ def new_grafico(df, grafico, basedados, agrupamento):
 
             colorscales = st.selectbox('Escala de cor selecionada:', colorscales, index=24, key=531)
 
-        st.markdown('---')
 
     if grafico == 'Linha Simples':
         fig2 = line_plot(df, varx, vary, cor1, agrupamento)
@@ -345,13 +353,15 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
 
     st.plotly_chart(fig1, use_container_width=True, config=config)
 
+    st.markdown('---')
+
     max = str(df['ANO'].max())
     min = str(df['ANO'].min())
 
 
 
     with st.sidebar:
-        with st.expander("🚀 Adicionar nova visualização a sua análise:"):
+        with st.expander("🚀 Adicionar nova visualização"):
             col1, col2 = st.columns([2, 2])
             with col1:
                 tabela = st.checkbox('Nova Tabela')
@@ -418,9 +428,8 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
                 st.text('')
                 st.text('')
         if graf:
-            st.markdown('---')
             st.markdown(
-                "<h3 style='font-size:119%; text-align: center; color: #05A854; padding: 0px 0px 10px 0px; margin-top: 0px;'" +
+                "<h3 style='font-size:119%; text-align: center; color: #05A854; padding: 0px 0px 10px 0px; margin-top: -40px;'" +
                 ">Manipulação dos dados e gráficos 2:</h3>", unsafe_allow_html=True)
 
             grafico2 = st.selectbox('Tipo do Gráfico:',
@@ -431,17 +440,14 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
             st.markdown('---')
 
     if tabela:
-        st.markdown('---')
-
         st.markdown(
-            "<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -50'" +
+            "<h3 style='font-size:140%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -50'" +
             ">" + basedados + ": <b> n° por " + agrupamento + " entre " + str(min) + " - " +
             str(max) + " | Tabela Dinâmica 2</b></h3>", unsafe_allow_html=True)
         df2_sel = new_tabela(df2)
         st.markdown('---')
 
     if graf:
-        st.markdown('---')
         new_grafico(df2, grafico2, basedados, agrupamento)
         st.markdown('---')
 
@@ -549,7 +555,7 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
 
 def relatorio(df, basedados, agrupamento):
 
-    st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 20px 0px 0px 0px;'" +
+    st.markdown("<h3 style='font-size:140%; text-align: center; color: #05A854; padding: 20px 0px 0px 0px;'" +
                 ">Relatório Básico sobre a Tabela selecionada:</h3>", unsafe_allow_html=True)
     st.markdown("<p style='font-size:120%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
                 ">"+basedados+" agrupapados por tipo de "+agrupamento+"</p>", unsafe_allow_html=True)
@@ -580,7 +586,7 @@ def relatorio(df, basedados, agrupamento):
     minutos, dependendo do tamanho da tabela."""
 
 
-    st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 20px 0px 0px 0px;'" +
+    st.markdown("<h3 style='font-size:140%; text-align: center; color: #05A854; padding: 20px 0px 0px 0px;'" +
                 ">Relatório Avançado - Exploratory Data Analysis (EDA) com Pandas profiling:</h3>", unsafe_allow_html=True)
     st.markdown('---')
 
@@ -610,7 +616,7 @@ def rodape():
       margin-right: auto;
       border-style: inset;
       border-width: 1.5px;">
-      <p style="color:#05A854; text-align: center;">Última atualização: 25/04/23 | mateus7ortiz@gmail.com</p>
+      <p style="color:#05A854; text-align: center;">Última atualização: 29/04/23 | mateus7ortiz@gmail.com</p>
     """
     st.markdown(html_rodpe, unsafe_allow_html=True)
 
@@ -699,8 +705,122 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
 
     st.plotly_chart(fig1, use_container_width=True, config=config)
 
+    st.markdown('---')
+
     max = str(df['ANO'].max())
     min = str(df['ANO'].min())
+
+
+
+    with st.sidebar:
+        with st.expander("🚀 Adicionar nova visualização"):
+            col1, col2 = st.columns([2, 2])
+            with col1:
+                tabela = st.checkbox('Nova Tabela')
+            with col2:
+                graf = st.checkbox('Novo Gráfico')
+
+            if tabela or graf:
+                basedados = st.selectbox("Selecione a tabela para análise:",
+                                         options=["População Universitária",
+                                                  "Vagas no Vestibular",
+                                                  "Inscritos no Vestibular"], index=0, key=9121)
+
+                if basedados == "População Universitária":
+                    agrupamento = st.radio('Selecione o agrupamento dos dados da tabela:',
+                                           ['Estudantes', 'Funcionários'], index=0, key=9111,
+                                           horizontal=True)
+                    if agrupamento == 'Estudantes':
+                        df2 = load_google_sheet(tabela="1")
+                        df2 = tratamento1(df2)
+
+                    elif agrupamento == 'Funcionários':
+                        df2 = load_google_sheet(tabela="2")
+                        df2 = tratamento1(df2)
+
+                elif basedados == "Vagas no Vestibular":
+                    df2 = load_google_sheet(tabela="3")
+                    df2 = tratamento2(df2)
+
+                    agrupamento = st.radio('Selecione o agrupamento dos dados da Tabela:',
+                                           ['Curso', 'Centro de Ensino', 'Campus'], index=0, key=9111, horizontal=True)
+
+                    if agrupamento == 'Curso':
+                        df2 = df2.groupby("CURSO").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
+
+                    elif agrupamento == 'Centro de Ensino':
+                        df2 = df2.groupby("CENTRO DE ENSINO").sum().T.reset_index(drop=False).rename({'index': 'ANO'},
+                                                                                                   axis=1)
+
+                    elif agrupamento == 'Campus':
+                        df2 = df2.groupby("CAMPUS").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
+
+                    df2 = df2.astype(int)
+
+                elif basedados == "Inscritos no Vestibular":
+                    df2 = load_google_sheet(tabela="4")
+                    df2 = tratamento2(df2)
+
+                    agrupamento = st.radio('Selecione o agrupamento dos dados da Tabela:',
+                                           ['Curso', 'Centro de Ensino', 'Campus'], index=0, key=9141, horizontal=True)
+
+                    if agrupamento == 'Curso':
+                        df2 = df2.groupby("CURSO").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
+
+                    elif agrupamento == 'Centro de Ensino':
+                        df2 = df2.groupby("CENTRO DE ENSINO").sum().T.reset_index(drop=False).rename({'index': 'ANO'},
+                                                                                                   axis=1)
+
+
+                    elif agrupamento == 'Campus':
+                        df2 = df2.groupby("CAMPUS").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
+
+                    df2 = df2.astype(int)
+
+                st.text('')
+                st.text('')
+
+        st.markdown('---')
+        if graf:
+            st.markdown(
+                "<h3 style='font-size:119%; text-align: center; color: #05A854; padding: 0px 0px 30px 0px; margin-top: 0px;'" +
+                ">Manipulação dos dados e gráficos (2)</h3>", unsafe_allow_html=True)
+
+            with st.expander("🎲️ Filtrar os dados"):
+                ano_max = int(df['ANO'].max())
+                ano_min = int(df['ANO'].min())
+                ano_range_min, ano_range_max = st.slider('Selecione o intervalo de ANOS:',
+                                                         min_value=ano_min, max_value=ano_max, value=(ano_min, ano_max), key=546)
+
+                mask_valor = (df['ANO'] >= int(ano_range_min)) & (df['ANO'] <= int(ano_range_max))
+
+                colunas = df.columns.unique().tolist()
+                selected_colunas = st.multiselect("Selecione as colunas da Tabela:",
+                                                  options=colunas, default=colunas, key=544)
+                st.markdown('---')
+                df = df.loc[:, selected_colunas]
+                df = df.loc[mask_valor]
+                st.markdown('---')
+
+            grafico2 = st.selectbox('Tipo do Gráfico:',
+                                    ['Barra Simples', 'Linha Simples', 'Dispersão Simples', 'Barras Empilhadas',
+                                     'Barras Agrupadas',
+                                     'Multiplas Linhas', 'Multiplas Áreas', 'Área Normalizada'],
+                                    index=1, key=981)
+            st.markdown('---')
+
+    if tabela:
+        st.markdown(
+            "<h3 style='font-size:140%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -50'" +
+            ">" + basedados + ": <b> n° por " + agrupamento + " entre " + str(min) + " - " +
+            str(max) + " | Tabela Dinâmica 2</b></h3>", unsafe_allow_html=True)
+        df2_sel = new_tabela(df2)
+        st.markdown('---')
+
+    if graf:
+        new_grafico(df2, grafico2, basedados, agrupamento)
+        st.markdown('---')
+
 
     if grafico == 'Barra Simples' or grafico == 'Linha Simples':
         with st.expander("Análise descritiva gerada por Inteligencia Artificial 🤖"):
