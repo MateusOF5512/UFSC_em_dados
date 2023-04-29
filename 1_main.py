@@ -10,9 +10,12 @@ im = Image.open("image/ufsc.jpg")
 im2 = Image.open("image/brasao.png")
 st.set_page_config(page_title="UFSC em Dados", page_icon=im, layout="wide")
 
-st.markdown(""" <style>
-        footer {visibility: hidden;}
-        </style> """, unsafe_allow_html=True)
+st.markdown("""
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """, unsafe_allow_html=True)
 
 
 st.markdown("<h1 style='font-size:250%; text-align: center; color: #05A854; padding: 0px 0px;'" +
@@ -99,7 +102,7 @@ with st.sidebar:
     st.text('')
     st.markdown(
         "<h3 style='font-size:120%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -40px;'" +
-        ">Manipulação dos dados e gráficos:</h3>", unsafe_allow_html=True)
+        ">Manipulação dos dados e gráficos</h3>", unsafe_allow_html=True)
 
     with st.expander("🎲️ Filtrar os dados"):
         ano_max = int(df['ANO'].max())
@@ -128,11 +131,11 @@ with st.sidebar:
 
 
 if basedados == "População Universitária":
-    st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -40px;'" +
+    st.markdown("<h3 style='font-size:140%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -40px;'" +
                 ">" + basedados + ": <b> n° de "  + agrupamento+" entre "+str(ano_range_min)+" - "+
                 str(ano_range_max)+" | Tabela Dinâmica</b></h3>", unsafe_allow_html=True)
 elif basedados == "Vagas no Vestibular" or basedados == "Inscritos no Vestibular":
-    st.markdown("<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -50'" +
+    st.markdown("<h3 style='font-size:140%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -50'" +
                 ">" + basedados + ": <b> n° por " + agrupamento + " entre " + str(ano_range_min) + " - " +
                 str(ano_range_max) + " | Tabela Dinâmica</b></h3>", unsafe_allow_html=True)
 
