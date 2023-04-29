@@ -427,16 +427,33 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
 
                 st.text('')
                 st.text('')
+        st.markdown('---')
         if graf:
             st.markdown(
-                "<h3 style='font-size:119%; text-align: center; color: #05A854; padding: 0px 0px 10px 0px; margin-top: -40px;'" +
-                ">Manipulação dos dados e gráficos 2:</h3>", unsafe_allow_html=True)
+                "<h3 style='font-size:119%; text-align: center; color: #05A854; padding: 0px 0px 20px 0px; margin-top: 0px;'" +
+                ">Manipulação dos dados e gráficos (2)</h3>", unsafe_allow_html=True)
+
+            with st.expander("🎲️ Filtrar os dados"):
+                ano_max = int(df['ANO'].max())
+                ano_min = int(df['ANO'].min())
+                ano_range_min, ano_range_max = st.slider('Selecione o intervalo de ANOS:',
+                                                         min_value=ano_min, max_value=ano_max, value=(ano_min, ano_max), key=564)
+
+                mask_valor = (df['ANO'] >= int(ano_range_min)) & (df['ANO'] <= int(ano_range_max))
+
+                colunas = df.columns.unique().tolist()
+                selected_colunas = st.multiselect("Selecione as colunas da Tabela:",
+                                                  options=colunas, default=colunas, key=578)
+                st.markdown('---')
+                df = df.loc[:, selected_colunas]
+                df = df.loc[mask_valor]
+                st.markdown('---')
 
             grafico2 = st.selectbox('Tipo do Gráfico:',
                                     ['Barra Simples', 'Linha Simples', 'Dispersão Simples', 'Barras Empilhadas',
                                      'Barras Agrupadas',
                                      'Multiplas Linhas', 'Multiplas Áreas', 'Área Normalizada'],
-                                    index=1, key=981)
+                                    index=1, key=943)
             st.markdown('---')
 
     if tabela:
@@ -616,7 +633,7 @@ def rodape():
       margin-right: auto;
       border-style: inset;
       border-width: 1.5px;">
-      <p style="color:#05A854; text-align: center;">Última atualização: 29/04/23 | mateus7ortiz@gmail.com</p>
+      <p style="color:#05A854; text-align: center;">Última atualização: 29/04/23 | versão 0.05</p>
     """
     st.markdown(html_rodpe, unsafe_allow_html=True)
 
@@ -721,13 +738,13 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
                 graf = st.checkbox('Novo Gráfico')
 
             if tabela or graf:
-                basedados = st.selectbox("Selecione a tabela para análise:",
+                basedados = st.selectbox("Selecione uma tabela:",
                                          options=["População Universitária",
                                                   "Vagas no Vestibular",
                                                   "Inscritos no Vestibular"], index=0, key=9121)
 
                 if basedados == "População Universitária":
-                    agrupamento = st.radio('Selecione o agrupamento dos dados da tabela:',
+                    agrupamento = st.radio('Selecione um agrupamento:',
                                            ['Estudantes', 'Funcionários'], index=0, key=9111,
                                            horizontal=True)
                     if agrupamento == 'Estudantes':
@@ -742,7 +759,7 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
                     df2 = load_google_sheet(tabela="3")
                     df2 = tratamento2(df2)
 
-                    agrupamento = st.radio('Selecione o agrupamento dos dados da Tabela:',
+                    agrupamento = st.radio('Selecione um agrupamento:',
                                            ['Curso', 'Centro de Ensino', 'Campus'], index=0, key=9111, horizontal=True)
 
                     if agrupamento == 'Curso':
@@ -761,7 +778,7 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
                     df2 = load_google_sheet(tabela="4")
                     df2 = tratamento2(df2)
 
-                    agrupamento = st.radio('Selecione o agrupamento dos dados da Tabela:',
+                    agrupamento = st.radio('Selecione um agrupamento:',
                                            ['Curso', 'Centro de Ensino', 'Campus'], index=0, key=9141, horizontal=True)
 
                     if agrupamento == 'Curso':
