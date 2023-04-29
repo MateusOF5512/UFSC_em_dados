@@ -5,6 +5,9 @@ from pandas_profiling import ProfileReport
 from streamlit_pandas_profiling import st_profile_report
 import io
 
+def new_tabela(df):
+    selected_rows = agg_tabela(df, True, key=88)
+    return selected_rows
 
 
 def sidebar_variaveis(df, grafico, basedados, agrupamento):
@@ -12,7 +15,7 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
         if grafico == 'Barra Simples' or grafico == 'Linha Simples':
             col1, col2 = st.columns([1, 8])
             with col1:
-                cor1 = st.color_picker('', '#05A854', key=1)
+                cor1 = st.color_picker('', '#05A854', key=1234)
             with col2:
                 df_y = df.drop('ANO', axis=1)
                 vary = st.selectbox(agrupamento+' selecionado:', df_y.columns.unique(), index=0, key=2)
@@ -76,6 +79,7 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
 
         st.markdown('---')
 
+
     if grafico == 'Linha Simples':
         fig1 = line_plot(df, varx, vary, cor1, agrupamento)
     elif grafico == 'Barra Simples':
@@ -130,7 +134,7 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
             st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
                         "><b>" + agrupamento + " selecionados:</b> " + varx + " e " + vary + " por ANO</p>", unsafe_allow_html=True)
 
-    elif basedados == "Vagas no Vestibular":
+    elif basedados == "Vagas no Vestibular" or basedados == "Inscritos no Vestibular":
 
         if grafico == 'Barra Simples' or grafico == 'Linha Simples':
             st.markdown("<h3 style='font-size:125%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
@@ -158,11 +162,172 @@ def sidebar_variaveis(df, grafico, basedados, agrupamento):
     elif grafico == 'Dispersão Simples':
         return fig1, varx, vary
 
-
-
 ##############################################################################################################
 # LAYOUT DAS BASES DE DADOS:
 ##############################################################################################################
+
+
+
+def new_grafico(df, grafico, basedados, agrupamento):
+    with st.sidebar:
+        if grafico == 'Barra Simples' or grafico == 'Linha Simples':
+            col1, col2 = st.columns([1, 8])
+            with col1:
+                cor1 = st.color_picker('', '#05A854', key=112)
+            with col2:
+                df_y = df.drop('ANO', axis=1)
+                vary = st.selectbox(agrupamento + ' selecionado:', df_y.columns.unique(), index=0, key=211)
+                varx = 'ANO'
+
+        elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
+                grafico == 'Multiplas Linhas' or grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
+
+            df['NULO'] = np.where(df['ANO'] == 0, 0, 0)
+            cols = df.columns.tolist()
+            cols = cols[-1:] + cols[:-1]
+            df = df[cols]
+
+            df_y = df.drop('ANO', axis=1)
+
+            col1, col2 = st.columns([1, 8])
+            with col1:
+                cor1 = st.color_picker('', '#05A854', key=311)
+            with col2:
+                vary_line1 = st.selectbox('1° ' + agrupamento + ' selecionado:', df_y.columns.unique(), index=1,
+                                          key=321)
+
+            col1, col2 = st.columns([1, 8])
+            with col1:
+                cor2 = st.color_picker('', '#005BAB', key=331)
+            with col2:
+                vary_line2 = st.selectbox('2° ' + agrupamento + ' selecionado:', df_y.columns.unique(), index=2,
+                                          key=341)
+
+            col1, col2 = st.columns([1, 8])
+            with col1:
+                cor3 = st.color_picker('', '#FFE400', key=351)
+            with col2:
+                vary_line3 = st.selectbox('3° ' + agrupamento + ' selecionado:', df_y.columns.unique(), index=0,
+                                          key=361)
+
+            col1, col2 = st.columns([1, 8])
+            with col1:
+                cor4 = st.color_picker('', '#ED1C24', key=371)
+            with col2:
+                vary_line4 = st.selectbox('4° ' + agrupamento + ' selecionado:', df_y.columns.unique(), index=0,
+                                          key=381)
+
+            col1, col2 = st.columns([1, 8])
+            with col1:
+                cor5 = st.color_picker('', '#F37519', key=391)
+            with col2:
+                vary_line5 = st.selectbox('5° ' + agrupamento + ' selecionado:', df_y.columns.unique(), index=0,
+                                          key=401)
+
+
+        elif grafico == 'Dispersão Simples':
+            df_bolhas = df.drop('ANO', axis=1)
+            vary = st.selectbox('Eixo X - ' + agrupamento + ' selecionado:', df_bolhas.columns.unique(), index=1,
+                                key=511)
+            varx = st.selectbox('Eixo Y - ' + agrupamento + ' selecionado:', df_bolhas.columns.unique(), index=0,
+                                key=521)
+
+            colorscales = ['Balance', 'Bluered', 'Cividis',
+                           'Delta', 'Dense', 'Electric', 'Greys', 'Hot',
+                           'HSV', 'Ice', 'Icefire', 'Inferno',
+                           'Matter', 'Picnic', 'Portland', 'Rainbow',
+                           'Solar', 'Spectral', 'Speed', 'Sunsetdark', 'Tempo',
+                           'Temps', 'Thermal', 'Twilight',
+                           'Viridis']
+
+            colorscales = st.selectbox('Escala de cor selecionada:', colorscales, index=24, key=531)
+
+        st.markdown('---')
+
+    if grafico == 'Linha Simples':
+        fig2 = line_plot(df, varx, vary, cor1, agrupamento)
+    elif grafico == 'Barra Simples':
+        fig2 = bar_plot(df, varx, vary, cor1, agrupamento)
+
+    elif grafico == 'Barras Empilhadas':
+        fig2 = bar_emp_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                            cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+
+    elif grafico == 'Barras Agrupadas':
+        fig2 = bar_group_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                              cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+    elif grafico == 'Multiplas Linhas':
+        fig2 = line_mult_plot(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                              cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+    elif grafico == 'Multiplas Áreas':
+        fig2 = area(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                    cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+    elif grafico == 'Área Normalizada':
+        fig2 = area_norm(df, 'ANO', vary_line1, vary_line2, vary_line3, vary_line4, vary_line5,
+                         cor1, cor2, cor3, cor4, cor5, basedados, agrupamento)
+
+    elif grafico == 'Dispersão Simples':
+        fig2 = plot_point(df, varx, vary, 'ANO', colorscales)
+
+    max = str(df['ANO'].max())
+    min = str(df['ANO'].min())
+
+    if basedados == "População Universitária":
+
+        if grafico == 'Barra Simples' or grafico == 'Linha Simples':
+            st.markdown(
+                "<h3 style='font-size:120%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                " - " + max + " | " + grafico + " 2</h3>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                        "><b>" + agrupamento + " selecionado:</b> " + vary + "</p>", unsafe_allow_html=True)
+
+        elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
+                grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
+            st.markdown(
+                "<h3 style='font-size:120%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                " - " + max + " | " + grafico + " 2</h3>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                        "><b>" + agrupamento + " selecionado:</b> " + vary_line1 + ",  " + vary_line2 +
+                        ",  " + vary_line3 + ",  " + vary_line4 + " e  " + vary_line5 + "</p>",
+                        unsafe_allow_html=True)
+
+        elif grafico == 'Dispersão Simples':
+            st.markdown(
+                "<h3 style='font-size:115%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                "><b>" + basedados + "</b>: n° de <b>" + agrupamento + " - análise temporal | " + min +
+                " - " + max + " | " + grafico + " 2</h3>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                        "><b>" + agrupamento + " selecionados:</b> " + varx + " e " + vary + " por ANO</p>",
+                        unsafe_allow_html=True)
+
+    elif basedados == "Vagas no Vestibular" or basedados == "Inscritos no Vestibular":
+
+        if grafico == 'Barra Simples' or grafico == 'Linha Simples':
+            st.markdown(
+                "<h3 style='font-size:120%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                "><b>" + basedados + "</b>: n° por <b>" + agrupamento + " - análise temporal | " + min +
+                " - " + max + " | " + grafico + " 2</h3>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                        "><b>" + agrupamento + " selecionado:</b> " + vary + "</p>", unsafe_allow_html=True)
+
+        elif grafico == 'Barras Empilhadas' or grafico == 'Barras Agrupadas' or \
+                grafico == 'Multiplas Áreas' or grafico == 'Área Normalizada':
+            st.markdown(
+                "<h3 style='font-size:120%; text-align: center; color: #05A854; padding: 10px 0px 0px 0px;'" +
+                "><b>" + basedados + "</b>: n° por <b>" + agrupamento + " - análise temporal | " + min +
+                " - " + max + " | " + grafico + " 2</h3>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size:100%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px;'" +
+                        "><b>" + agrupamento + " selecionado:</b> " + vary_line1 + ",  " + vary_line2 +
+                        ",  " + vary_line3 + ",  " + vary_line4 + " e  " + vary_line5 + "</p>",
+                        unsafe_allow_html=True)
+
+
+    st.plotly_chart(fig2, use_container_width=True, config=config)
+
+    return None
+
 
 def populacao(df, selected_rows, grafico, basedados, agrupamento):
 
@@ -182,6 +347,104 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
 
     max = str(df['ANO'].max())
     min = str(df['ANO'].min())
+
+
+
+    with st.sidebar:
+        with st.expander("🚀 Adicionar nova visualização a sua análise:"):
+            col1, col2 = st.columns([2, 2])
+            with col1:
+                tabela = st.checkbox('Nova Tabela')
+            with col2:
+                graf = st.checkbox('Novo Gráfico')
+
+            if tabela or graf:
+                basedados = st.selectbox("Selecione a tabela para análise:",
+                                         options=["População Universitária",
+                                                  "Vagas no Vestibular",
+                                                  "Inscritos no Vestibular"], index=0, key=912)
+
+                if basedados == "População Universitária":
+                    agrupamento = st.radio('Selecione o agrupamento dos dados da tabela:',
+                                           ['Estudantes', 'Funcionários'], index=0, key=911,
+                                           horizontal=True)
+                    if agrupamento == 'Estudantes':
+                        df2 = load_google_sheet(tabela="1")
+                        df2 = tratamento1(df2)
+
+                    elif agrupamento == 'Funcionários':
+                        df2 = load_google_sheet(tabela="2")
+                        df2 = tratamento1(df2)
+
+                elif basedados == "Vagas no Vestibular":
+                    df2 = load_google_sheet(tabela="3")
+                    df2 = tratamento2(df2)
+
+                    agrupamento = st.radio('Selecione o agrupamento dos dados da Tabela:',
+                                           ['Curso', 'Centro de Ensino', 'Campus'], index=0, key=911, horizontal=True)
+
+                    if agrupamento == 'Curso':
+                        df2 = df2.groupby("CURSO").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
+
+                    elif agrupamento == 'Centro de Ensino':
+                        df2 = df2.groupby("CENTRO DE ENSINO").sum().T.reset_index(drop=False).rename({'index': 'ANO'},
+                                                                                                   axis=1)
+
+                    elif agrupamento == 'Campus':
+                        df2 = df2.groupby("CAMPUS").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
+
+                    df2 = df2.astype(int)
+
+                elif basedados == "Inscritos no Vestibular":
+                    df2 = load_google_sheet(tabela="4")
+                    df2 = tratamento2(df2)
+
+                    agrupamento = st.radio('Selecione o agrupamento dos dados da Tabela:',
+                                           ['Curso', 'Centro de Ensino', 'Campus'], index=0, key=914, horizontal=True)
+
+                    if agrupamento == 'Curso':
+                        df2 = df2.groupby("CURSO").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
+
+                    elif agrupamento == 'Centro de Ensino':
+                        df2 = df2.groupby("CENTRO DE ENSINO").sum().T.reset_index(drop=False).rename({'index': 'ANO'},
+                                                                                                   axis=1)
+
+
+                    elif agrupamento == 'Campus':
+                        df2 = df2.groupby("CAMPUS").sum().T.reset_index(drop=False).rename({'index': 'ANO'}, axis=1)
+
+                    df2 = df2.astype(int)
+
+                st.text('')
+                st.text('')
+        if graf:
+            st.markdown('---')
+            st.markdown(
+                "<h3 style='font-size:119%; text-align: center; color: #05A854; padding: 0px 0px 10px 0px; margin-top: 0px;'" +
+                ">Manipulação dos dados e gráficos 2:</h3>", unsafe_allow_html=True)
+
+            grafico2 = st.selectbox('Tipo do Gráfico:',
+                                    ['Barra Simples', 'Linha Simples', 'Dispersão Simples', 'Barras Empilhadas',
+                                     'Barras Agrupadas',
+                                     'Multiplas Linhas', 'Multiplas Áreas', 'Área Normalizada'],
+                                    index=1, key=981)
+            st.markdown('---')
+
+    if tabela:
+        st.markdown('---')
+
+        st.markdown(
+            "<h3 style='font-size:150%; text-align: center; color: #05A854; padding: 0px 0px 0px 0px; margin-top: -50'" +
+            ">" + basedados + ": <b> n° por " + agrupamento + " entre " + str(min) + " - " +
+            str(max) + " | Tabela Dinâmica 2</b></h3>", unsafe_allow_html=True)
+        df2_sel = new_tabela(df2)
+        st.markdown('---')
+
+    if graf:
+        st.markdown('---')
+        new_grafico(df2, grafico2, basedados, agrupamento)
+        st.markdown('---')
+
 
     if grafico == 'Barra Simples' or grafico == 'Linha Simples':
 
@@ -253,7 +516,7 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
                 st.markdown("<h3 style='font-size:100%; text-align: center; color: #05A854;'" +
                             "><i>Analise Temporal " + min + " a " + max + ": " + vary + "</i> - TABELA RESUMIDA</h3>",
                             unsafe_allow_html=True)
-                agg_tabela(df_barra, use_checkbox=False)
+                agg_tabela(df_barra, use_checkbox=False, key=89)
 
             df_barra = df_barra.to_csv(index=False).encode('utf-8')
             st.download_button(label="Download Dados", data=df_barra,
@@ -273,7 +536,7 @@ def populacao(df, selected_rows, grafico, basedados, agrupamento):
             checkdf = st.checkbox('Visualizar Dados', key=71)
             if checkdf:
 
-                agg_tabela(df_barra, use_checkbox=False)
+                agg_tabela(df_barra, use_checkbox=False, key=84)
 
             df_barra = df_barra.to_csv(index=False).encode('utf-8')
             st.download_button(label="Download Dados", data=df_barra,
@@ -504,7 +767,7 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
                 st.markdown("<h3 style='font-size:100%; text-align: center; color: #05A854;'" +
                             "><i>Analise Temporal " + min + " a " + max + ": " + vary + "</i> - TABELA RESUMIDA</h3>",
                             unsafe_allow_html=True)
-                agg_tabela(df_barra, use_checkbox=False)
+                agg_tabela(df_barra, use_checkbox=False, key=85)
 
             df_barra = df_barra.to_csv(index=False).encode('utf-8')
             st.download_button(label="Download Dados", data=df_barra,
@@ -542,7 +805,7 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
             checkdf = st.checkbox('Visualizar Dados do Gráfico', key=71)
             if checkdf:
 
-                agg_tabela(df_barra, use_checkbox=False)
+                agg_tabela(df_barra, use_checkbox=False, key=86)
 
             df_barra = df_barra.to_csv(index=False).encode('utf-8')
             st.download_button(label="Download Dados", data=df_barra,
@@ -560,7 +823,7 @@ def vagasvestibular(df, selected_rows, grafico, basedados, agrupamento):
 
             checkdf = st.checkbox('Visualizar Dados do Gráfico', key=71)
             if checkdf:
-                agg_tabela(df_barra, use_checkbox=False)
+                agg_tabela(df_barra, use_checkbox=False, key=87)
 
             df_barra = df_barra.to_csv(index=False).encode('utf-8')
             st.download_button(label="Download Dados", data=df_barra,
