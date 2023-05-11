@@ -1,12 +1,1 @@
-{
-  "type": "service_account",
-  "project_id": "streamlit-373718",
-  "private_key_id": "f2e709f0d5bc9724e7be045f2f6b95806f67497e",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDDG+AKMvZ6UGXb\n7wl9Qvup07W5K1BPjZcbDI7StGkr7Hc0+PXcU8qDkc18m6RzbOECALiXYpWmKVEE\nAk+K/TsBLq1GzcZlbZPDCIvKxak2hT7RSnhdh5iGERR+AZ8QuqVyaIrU3O6yvvvB\n+2cHuzCfJEbrlXq+htCrtJeHM5ce1WwWsg7WJLv3KWJjiHJaG28sRMGAmdhi3DXA\nvrg8y0jK94zYY4BThht20mQnGiN8rVXop4xnL0Emmg4hdk9m4hF+9Z5U26lCxXfO\noZP4Q101D+3PGaHUg8KvySqmmR3M7dWJp6IVhSD01hRwoMytJL8Oje1AHoeRbYYh\nnK4rBIO1AgMBAAECggEAQaMdjmDRsZldgw1aDGVd46ag8m/jXzf7dzKU08a0wP2W\npuAAWkRoEzYYQozb2Kbu1W0nrGoSfSlWI3qhhtklIgMxcOnmDhY8iPbVjHxNrlVK\nKj+a2aA1zBhv4+oouIiKA0CvP+gpd0Gv0XUBlsS/GTKrlzKc7f7NsY4aEfZlpw2/\n+0rCU4emf0blNoKOIvORnJm1UW91rXMA3dFSWizkIpp5lvCinQ+1W+V614hEqZ9t\nedAHqsASWcbffU4sdykIcNgn6gnoQdMsgbSXGRGbep38FMg0Z6A07g9m5ZvHVAub\nZS4SRWYwvUUgK2HLftDNhS4GN7kbNtUD6sbVzb7CCwKBgQDqL3OfW4SVI42+EN6O\nLWd69Xj1hhGMPtREb0nEIcgmHcSSRcq+8GztpdTcPFt4Og528R8SEtDaxx3hQMAG\n2awf6VB1YaEqpDX6caPW0dM5fMVRM3UUi7989h5bfuvJ7pOBUZBmbbTPn1qgZ+QJ\ntonzPQfEDcs7zhcxAKvd4F4iXwKBgQDVSJQdI9TZZcQxx1G2pA8RKjMty9uLFLC+\ndP20HZ848/CN3OaLbtVpG7SBNhhSxZbRQE6MoasM+T09Lwu12cOVN9eaK2lsjKyS\nd9pPLYBKUC9dEWDDUz6dNphXiQqhgnBH4/AzxZRp1wrpV8sS7FY6Qm0MAL9IHih6\nBSndY2GaawKBgC9zQ+szIO8TECJFysJmIsSAPm0JKD8Rb/MZ1Yl/Cs3mVDELISSF\nFJ0mb7XcKPB4WvvwqUoBM/5QQBanBwGcU0r3/Ex8Zqp8MU+4fOkHBNRuGpD0azGp\nizgnqkkBs4br50lZnHeUnQFAmZ1Mz6DEMrltUUiBPv+0J3DPYQOI9anjAoGAVXeO\nEtdG9g73vdLXhc7cUs6MT6+/PE6APPH4sHKmWVY3cUGyCPHTBxmZDaY1vQV82EFi\nuKwYNUyzI490q9ylqWgFN7xptJvyk4b/rnbXT/At6qeKFPuIvcsg5QL/hZUVlVlb\n6gMk4/zOXI9Xyy91pkb0F7k87ZNYOP1Ut2iZth0CgYEA2MlbWOulRePSKzLY1yAg\nGV0QQlTyHk9zrzaf5Yass1jQ3HMfp5P1TA3jXeJOP7KI3sx45c4mxor+HP4fbqU+\nzAElWpLc+PG2sGTNUMwak6EgZuA4WA1Q7fUzJ8n9nQrTnRkXJD0vA3kNIIumBt7p\ndqYWUw/2VBUqe2V4DrIY16I=\n-----END PRIVATE KEY-----\n",
-  "client_email": "streamlit-ufsc-dados@streamlit-373718.iam.gserviceaccount.com",
-  "client_id": "110086880909847872767",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/streamlit-ufsc-dados%40streamlit-373718.iam.gserviceaccount.com"
-}
+
